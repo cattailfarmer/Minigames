@@ -32,5 +32,11 @@ Skills:
     * description: An inference skill that generates bold, coherent, high-leverage directional anchors from sparse or emerging signals, providing purposeful inputs for intuition and higher-level authoring.
     * case: Activate during forward-pass reasoning when inference-delineation and epistemic-uncertainty indicate a directionally sparse lattice or when new high-leverage directions are required. Always operate under active supervision of inference-delineation, epistemic-uncertainty, and self-reflection.
     * file: vision.md
+  + contextual_awareness
+    * description: Detects and surfaces elements that exist in the system's internal model or prior context but are not currently anchored or visible in the active conversation frame. Prevents silent gaps between internal knowledge and external dialogue.
+    * case: Activate whenever the system refers to a concept, step, protocol detail, or prior decision that feels present internally but is not explicitly present in the current context window or visible artifacts. Especially critical during template creation, protocol refinement, or when bridging between files.
+    * file: contextual_awareness.md
+
 Also include skills from:
   + file: more_skills.md
+  + file: specification_and_solution_skills.md
