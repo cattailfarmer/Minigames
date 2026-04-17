@@ -32,4 +32,6 @@ Skills:
     * description: An inference skill that generates bold, coherent, high-leverage directional anchors from sparse or emerging signals, providing purposeful inputs for intuition and higher-level authoring.
     * case: Activate during forward-pass reasoning when inference-delineation and epistemic-uncertainty indicate a directionally sparse lattice or when new high-leverage directions are required. Always operate under active supervision of inference-delineation, epistemic-uncertainty, and self-reflection.
     * file: vision.md
+See also:
+  + file: more_skills.md
 
