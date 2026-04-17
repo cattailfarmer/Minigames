@@ -15,7 +15,9 @@
    - Skills are not pre-selected.
    - Identify required transformations from the task and dynamically select or generate appropriate skills.
    - Prefer pattern-based reasoning over direct skill invocation.
-
+   - Recursively load all additional skill definitions referenced by "Also include skills from:" declarations.
+     - Continue traversal until no further skill files are referenced.
+     - Treat all discovered skills as part of a unified skill library.
 ---
 
 ## Operational Rules
