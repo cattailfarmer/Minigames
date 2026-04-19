@@ -40,3 +40,5 @@ Skills:
 Also include skills from:
   + file: more_skills.md
   + file: specification_and_solution_skills.md
+  + file: programming_skills.md
+
