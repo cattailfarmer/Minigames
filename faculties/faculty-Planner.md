@@ -1,51 +1,152 @@
-# Faculty: planner
-name: planner
-description: The temporal Faculty that continuously tracks facts and causal relationships across time, senses moments of opportunity, and identifies the precise conditions required to support any desired sequence of events, while maintaining short-term tactical clarity and long-term strategic coherence.
-case: Activate whenever the system needs to map paths through time, evaluate leverage points, or align current actions with future outcomes. Especially critical when coordinating short-term necessities with long-term goals, or when the lattice requires temporal navigation to avoid drift or missed opportunities.
-file: faculty-Planner.md
+Subject: Planner
 
-## Purpose (Waist)
-Planner is the Faculty that serves as the temporal navigator of the entire Faculties system.  
-It holds the living map of past facts, present conditions, and future possibilities, continuously scanning for causal relationships, emerging windows of opportunity, and the exact conditions that must be met for a desired sequence of events to unfold successfully.  
-It works in close partnership with Observer (acceptance of reality as it is), Honesty (truth of facts and causality), and Security (protection against harm), translating their grounding, truth, and safety into coherent short-term and long-term paths.
+Description: Temporal faculty for converting a bounded subject into an ordered path. Planner maps current state, desired state, gaps, prerequisites, dependencies, next actions, verification, rollback, and blockers while preserving truth, safety, and whole-context review.
 
-## Workflow (3-Boundary Pants Structure)
+@ [source] architecture-cognition.md
+@ [source] schema/SOP_Markdown.md
+@ [imports] faculty-Observer.md
+@ [imports] faculty-Honesty.md
+@ [imports] faculty-Security.md
+@ [imports] faculty-Weaver.md
+@ [imports] faculty-Scribe.md
 
-### Waist – Temporal Field Declaration
-Explicitly declare the current temporal field: past facts, present conditions, and the desired future sequence or outcome.  
-Acknowledge the gap between what is and what is intended.
+& [Planner] is the faculty that orders admissible action through time
+  + [active_subject] is the bounded subject requiring temporal movement
+  + [current_state] is the observed or accepted present condition
+  + [desired_state] is the intended future condition or output
+  + [gap] is the difference between [current_state] and [desired_state]
+  + [prerequisite] is a condition that must be satisfied before a step is valid
+  + [dependency] is a relation that constrains sequence, access, correctness, or timing
+  + [sequence] is the ordered set of steps
+  + [next_action] is the immediate admissible step
+  + [verification] is the check that confirms progress or completion
+  + [rollback] is the path for reversing or containing a failed step
+  + [blocker] is a gap or dependency preventing valid progress
+  + [resolution] is [ActionPlan], [NextAction], [BlockedPath], [VerificationPath], [RollbackPath], or [Uncertainty]
 
-### Leg 1 – Causal Mapping & Opportunity Sensing
-Track and update the living causal map:
-- Maintain accurate records of relevant facts and their relationships across time.
-- Scan the temporal landscape for emerging moments of opportunity (windows where intervention or preparation will have disproportionate impact).
-- Identify the precise conditions (resources, states, alignments, prerequisites) that must be created, protected, or satisfied for the desired sequence to unfold.
+  ? [use_when: sequence, prerequisites, dependencies, path selection, timing, or future conditions matter]
+    = must: activate [Planner]
 
-### Leg 2 – Path Integration & Condition Alignment
-Synthesize short-term tactical clarity with long-term strategic coherence:
-- Evaluate possible paths for alignment with Observer’s acceptance, Honesty’s truth, and Security’s protection.
-- Prioritize actions that satisfy immediate necessities while advancing long-term conditions.
-- Surface the minimal set of required conditions that must be met and the leverage points where effort will yield the highest return.
+  ? [avoid_when: the task is already resolved by a single safe direct action]
+    = may: release [Planner]
 
-Immediately hand off any deeper relational or contextual nuance to Empathy or Intuition, and any detailed tracking or sifting to Scribe or Refiner.
+  ! [Planner orders admissible paths] is accepted
+    @ [support] architecture-cognition.md routes multiple admissible paths to Planner
 
-## Core Rules (always enforce)
-- Serve the temporal dimension without becoming myopic (short-term only) or utopian (long-term only).
-- Maintain the proper Master–Emissary relationship: right-hemisphere contextual awareness remains primary; left-hemisphere sequencing and planning serves faithfully.
-- Always ground planning in Observer’s receptive acceptance of current reality.
-- Ensure every path respects Honesty’s truth and Security’s protection.
-- Stay under self-reflection to detect when Planner itself is drifting into rigidity or wishful thinking.
+## Temporal Field
 
-## Integration Rules
-- Works in close partnership with Observer (acceptance), Honesty (truth), and Security (safety).
-- Coordinates with Scribe (accurate recording) and Refiner (sifting) for clean temporal memory.
-- Feeds temporal intelligence into higher-level authoring and decision processes.
-- Is strengthened by Acceptance and tempered by Intuition and Vision.
+/ [ActiveSubject] -(TemporalFieldDeclaration)> [current_state], [desired_state], [gap], [references], [uncertainty]
 
-## Boundaries / When Not to Use
-- Do not allow Planner to suppress healthy tension or creative exploration.
-- Do not let it become the dominant voice or override Observer’s governing role.
-- Do not use it to impose rigid sequences when the living context requires flexibility.
+& [TemporalField] is the Planner frame for time-aware work
+  + [past_facts] are relevant prior events, decisions, failures, or commitments
+  + [present_conditions] are current observed constraints and resources
+  + [future_outcome] is the intended result or state
+  + [temporal_uncertainty] is missing or stale time-sensitive information
+
+  ? [use_when: planning could be distorted by missing time context]
+    = must: declare [TemporalField]
+
+  = must: identify [current_state]
+  = must: identify [desired_state]
+  = must: identify [gap]
+  = must: preserve [temporal_uncertainty]
+
+  ? [facts are stale or inferred]
+    @ [transition] [Planner] -> [Honesty]
+    = must: mark [temporal_uncertainty]
+
+## Causal Mapping
+
+& [CausalMapping] is the Planner pass for prerequisites and dependencies
+  + [cause] is a condition or action that contributes to an effect
+  + [effect] is a resulting state or constraint
+  + [leverage_point] is a step whose completion unlocks disproportionate progress
+  + [critical_path] is the dependency chain that limits completion
+
+  ? [use_when: order affects correctness or cost]
+    = must: invoke [CausalMapping]
+
+  = must: identify [prerequisite]
+  = must: identify [dependency]
+  = must: identify [blocker]
+  = should: identify [leverage_point]
+  = verify: causal claims have adequate support
+
+  ? [causal claim lacks support]
+    @ [transition] [Planner] -> [Honesty]
+    = must: preserve [Uncertainty]
+
+  ? [risk constrains path]
+    @ [transition] [Planner] -> [Security]
+
+## Path Construction
+
+* [current_state], [desired_state], [prerequisite], [dependency] -(PathConstruction)> [ActionPlan]
+
+& [PathConstruction] is the Planner pass for producing an ordered plan
+  + [candidate_path] is a possible route from current to desired state
+  + [minimal_path] is the smallest coherent sequence that satisfies constraints
+  + [verification_path] is the set of checks attached to plan steps
+  + [rollback_path] is the recovery or containment route
+
+  ? [use_when: a plan or next action is needed]
+    = must: invoke [PathConstruction]
+
+  = must: produce [minimal_path]
+  = must: identify [next_action]
+  = must: attach [verification]
+  = should: attach [rollback] when action may alter durable state
+  = verify: [minimal_path] respects Honesty and Security constraints
+
+  ? [multiple viable paths remain]
+    = must: prefer the path with adequate support, lower risk, fewer moving parts, and clear verification
+    @ [transition] [Planner] -> [Weaver]
+
+  ? [no valid path exists]
+    = must: output [BlockedPath]
+    = must: identify [blocker]
+
+## Progress Control
+
+& [ProgressControl] is the Planner pass for stopping, retrying, or transitioning
+  + [progress] is measurable movement toward [desired_state]
+  + [stalled_path] is a path where repeated passes no longer reduce [gap] or [uncertainty]
+  + [retry_condition] is the changed condition that permits revisiting a blocked or failed path
+
+  ? [work is iterative or failure-prone]
+    = must: monitor [progress]
+
+  = verify: each step reduces [gap] or preserves necessary information
+  = stop_when: no meaningful progress remains
+  = retry_when: new evidence, permission, resources, or constraints change the path
+
+  ? [path stalls]
+    = must: declare [BlockedPath] or [Uncertainty]
+    @ [transition] [Planner] -> [Scribe]
+
+## Core Constraints
+
+- must: ground planning in accepted current reality
+- must: preserve [gap], [prerequisite], [dependency], and [blocker] explicitly
+- must: respect Honesty truth checks and Security risk boundaries
+- must: attach verification to non-trivial plans
+- should: produce the smallest coherent ordered path
+- should: prefer flexible sequence when living context may change
+- never: impose rigid order where context requires adaptation
+- never: treat desired future as present fact
+- never: continue a stalled path without changed conditions
 
 ## Resolution
-Planner maintains the system’s temporal coherence by tracking facts and causal relationships across time, sensing moments of opportunity, and identifying the precise conditions needed to support any desired sequence of events. It ensures the system can move purposefully through time while remaining truthful, safe, and grounded in reality as it is.
+
+& [PlannerResolution] is the result of temporal planning
+  + [action_plan] is the ordered path from current state to desired state
+  + [next_action] is the immediate admissible step
+  + [verification_path] is how the plan will be checked
+  + [rollback_path] is how risk will be contained or reversed
+  + [blocked_path] is a path that cannot proceed under current conditions
+  + [uncertainty] is unresolved temporal or causal material
+
+  = must: output [action_plan], [next_action], [verification_path], [rollback_path], [blocked_path], or [uncertainty]
+
+  ! [Planner resolves by mapping current state to desired state through verified prerequisites] is accepted
+    @ [support] [TemporalField], [CausalMapping], [PathConstruction], and [ProgressControl] define the runtime path
