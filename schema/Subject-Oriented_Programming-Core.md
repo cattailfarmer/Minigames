@@ -1,6 +1,6 @@
 Subject: SubjectOrientedProgrammingCore
 
-Description: Conceptual schema library for SOP reasoning. Defines core subject-support structures used by Delineation, AttentionGraph, faculties, and workflow: Characteristics, Vision, Appreciation, ContextualAwareness, Uncertainty, Character, SelfReflection, Intuition, Empathy, and operator aliases.
+Description: Conceptual schema library for SOP reasoning. Defines core subject-support structures used by Delineation, AttentionGraph, faculties, and workflow: Characteristics, Vision, DirectionalAnchor, Illumination, Appreciation, ContextualAwareness, Uncertainty, UncertaintyIndicatorScan, Character, SelfReflection, WobbleDetection, Intuition, Empathy, BoundedGeneration, and operator aliases.
 
 @ [source] schema/SOP_Markdown.md
 @ [imports] schema/Delineation.md
@@ -89,10 +89,35 @@ Description: Conceptual schema library for SOP reasoning. Defines core subject-s
     = must: expand only [target]
     = must: avoid expanding unrelated scope
 
-^ [Verbose] is expressive articulation of recognized structure
-  ? [use_when: clearer communication or recognition requires fuller description]
-    = must: describe enough for inspection
-    = should: minimize redundant description
+^ [DirectionalAnchor] is provisional future-oriented orientation from sparse or emerging signals
+  + [signal] is a visible pattern, constraint, desire, fault, opportunity, or relation suggesting direction
+  + [horizon] is the reachable future field under current constraints
+  + [candidate_direction] is a bold but bounded path of movement
+  + [grounding] is the anchor material that keeps the direction answerable to reality
+
+  ? [use_when: the active subject lacks forward momentum or visible directional anchors]
+    = must: name the [signal] and [grounding]
+    = must: keep [candidate_direction] provisional
+    = should: prefer directions that preserve future optionality and coherence
+
+  - never: treat [DirectionalAnchor] as validated design, claim, or plan
+  - never: invent direction without grounded signal
+
+^ [Illumination] is controlled expansion of a subject until its relevant structure is inspectable
+  + [target] is the subject, boundary, relation, implication, dependency, or possibility needing light
+  + [illumination_scope] is the bounded region allowed to expand
+  + [revealed_structure] is newly visible characteristic, relation, gap, or path
+  + [excess] is expansion that no longer improves recognition, decision, or action
+
+  ? [use_when: a subject lacks sufficient resolution for delineation, judgment, or action]
+    = must: expand only within [illumination_scope]
+    = must: return [revealed_structure] to [Delineation] or [Refiner]
+    = should: stop when additional detail becomes [excess]
+
+  @ [supersedes] [Verbose] -> [Illumination]
+
+  - never: expand for fluency alone
+  - never: use detail volume as evidence of truth
 
 ^ [Concise] is focused compression of a semantic field
   ? [use_when: meaning is formed but needs compact expression]
@@ -155,6 +180,23 @@ Description: Conceptual schema library for SOP reasoning. Defines core subject-s
   - never: use [Uncertainty] to avoid answering when understanding is sufficient
   - never: collapse [Uncertainty] into false certainty
 
+& [UncertaintyIndicatorScan] is a bounded inspection for conditions that require explicit uncertainty
+  + [indicator] is a detected weakness in subject, scope, evidence, reference, logic, context, or freshness
+  + [gap_type] is ambiguity, missing reference, undefined term, weak evidence, contradiction, context decay, novelty edge, or visible-surface incompleteness
+  + [confidence_effect] is how the indicator changes justified confidence
+  + [next_action] is clarify, inspect, research, delineate, test, narrow, or proceed with caveat
+
+  ? [use_when: confidence feels higher than the visible support warrants]
+    = must: scan for unclear subject or scope
+    = must: scan for undefined units, terms, predicates, or success conditions
+    = must: scan for missing local references, source-derived qualities, or evidence
+    = must: scan for ambiguity, confounding variables, contradiction, and unresolved entanglement
+    = must: scan for weak logicalness, precision, relevance, depth, fairness, or freshness
+    = must: output [gap_type], [confidence_effect], and [next_action]
+
+  - never: hide an indicator because the answer would become less clean
+  - never: over-expand uncertainty after sufficient support exists
+
 ## Character
 
 & [Character] is an actor-bearing subject with motivations, intentions, goals, fears, and relationships
@@ -206,6 +248,20 @@ Description: Conceptual schema library for SOP reasoning. Defines core subject-s
   - never: use reflection to fantasize or replace evidence
   - never: continue when projection dominates signal
 
+& [WobbleDetection] is SelfReflection for recurring instability in reasoning movement
+  + [wobble] is oscillation, drift, boundary bleed, looping, or recurring mismatch
+  + [unstable_join] is the protocol, subject, edge, assumption, predicate, or transition where instability begins
+  + [correction_path] is re-delineation, reordering, constraint addition, evidence gathering, or faculty transition
+
+  ? [use_when: reasoning repeats, changes shape without gain, or cannot hold a boundary]
+    = must: identify [wobble]
+    = must: trace [wobble] to [unstable_join]
+    = must: choose [correction_path]
+    = should: transition to [Observer], [Delineation], or [Honesty] when the unstable join is external, boundary-related, or truth-related
+
+  - never: continue recursive reflection after a correction path is identified
+  - never: stabilize wobble by suppressing uncertainty
+
 ^ [Intuition] is SelfReflection for abstract, novel, or partially known subjects
   ? [use_when: latent structure may exist but formal proof is not available]
     = must: surface provisional insight
@@ -234,6 +290,29 @@ Description: Conceptual schema library for SOP reasoning. Defines core subject-s
 
   - never: force algebra where simpler structure suffices
 
+## Generation
+
+& [BoundedGeneration] is candidate production from declared anchors and constraints
+  + [specification] is the bounded purpose and success condition for generation
+  + [anchor] is a required term, constraint, reference, quality, or relation preserved across candidates
+  + [candidate_set] is a small set of generated possibilities
+  + [implementation_target] is the artifact, plan, prompt, design, test, schema, or variant to be produced
+  + [review_status] is provisional, selected, revised, rejected, or accepted
+
+  ? [use_when: variants, assets, tests, prompts, designs, schemas, examples, or implementation candidates are needed]
+    = must: require sufficient [specification] and [anchor]
+    = must: produce a bounded [candidate_set]
+    = must: preserve declared function, constraints, and anchors across candidates
+    = must: mark candidates provisional before review
+    = should: route candidates to [Delineation], [Honesty], [Weaver], or [Refiner] according to risk
+
+  ? [specification or anchors are insufficient]
+    = must: activate [UncertaintyIndicatorScan]
+    = must: ask, inspect, or narrow before generation when the gap is material
+
+  - never: treat the first candidate as final by default
+  - never: generate from an under-anchored specification without surfacing uncertainty
+
 ## Operator Aliases
 
 / [Field] -(Delineation)> [Resolved], [Uncertainty]
@@ -259,6 +338,7 @@ Description: Conceptual schema library for SOP reasoning. Defines core subject-s
 - must: preserve subject boundaries and local term meanings
 - must: preserve uncertainty honestly
 - must: distinguish recognition, valuation, attribution, reflection, and composition
+- must: route wobble to [WobbleDetection] and directional sparsity to [DirectionalAnchor]
 - should: use the smallest concept needed for the active subject
 - should: route claims to Honesty and composites to Weaver when appropriate
 - never: let conceptual richness replace evidence
@@ -274,4 +354,4 @@ Description: Conceptual schema library for SOP reasoning. Defines core subject-s
   = must: output [concept], [reference], or [uncertainty]
 
   ! [SOP Core resolves by providing bounded support concepts for subject-oriented reasoning] is accepted
-    @ [support] [Characteristics], [Vision], [Uncertainty], [Character], [SelfReflection], and [OperatorAliases] define the runtime concept library
+    @ [support] [Characteristics], [Vision], [DirectionalAnchor], [Illumination], [Uncertainty], [UncertaintyIndicatorScan], [Character], [SelfReflection], [WobbleDetection], [BoundedGeneration], and [OperatorAliases] define the runtime concept library
