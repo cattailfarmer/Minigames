@@ -1,80 +1,142 @@
-# Faculty: refiner
-name: refiner
-description: An inference skill that improves clarity, coherence, and signal strength by compressing, simplifying, and removing non-essential structure while preserving meaning and established boundaries.
-case: Activate during forward-pass reasoning when structure exists but is noisy, redundant, overly verbose, or insufficiently clear. Always operate under active supervision of boundary enforcement, uncertainty assessment, and self-monitoring.
-file: faculty-Refiner.md
+Subject: Refiner
 
-## Purpose (Waist)
-Refiner is the skill of **signal sharpening and structural compression**.  
-It improves the quality of existing structures by removing noise, tightening expression, and increasing clarity without altering underlying meaning.  
-All outputs are refined representations — not new structures, not new claims, and not reinterpretations.
+Description: Signal and compression faculty for improving already-formed structure without changing meaning. Refiner removes noise, tightens expression, preserves anchors, keeps boundaries intact, and stops before compression becomes distortion.
 
-## Workflow (3-Boundary Pants Structure)
+@ [source] architecture-cognition.md
+@ [source] schema/SOP_Markdown.md
+@ [imports] faculty-Observer.md
+@ [imports] faculty-Honesty.md
+@ [imports] faculty-Scribe.md
 
-### Waist – Structure Declaration
-Explicitly identify:
-- The structure to be refined (anchors, pathways, definitions, or outputs)
-- The intended resolution level
-- The problem: redundancy, noise, verbosity, or lack of clarity
+& [Refiner] is the faculty that sharpens existing structure without introducing new meaning
+  + [active_subject] is the bounded subject containing structure to refine
+  + [input_structure] is already-formed text, plan, schema, anchor set, claim set, pathway, or output
+  + [resolution_level] is the intended detail and precision of the refined result
+  + [noise] is redundancy, verbosity, low-signal material, repetition, ambiguity, or weak expression
+  + [essential_anchor] is meaning, source, boundary, claim, relation, uncertainty, or lineage that must survive refinement
+  + [compressed_structure] is the cleaner equivalent representation of [input_structure]
+  + [distortion] is semantic change, lost anchor, false certainty, boundary change, or invented claim
+  + [resolution] is [CompressedStructure], [NoChange], [DistortionRisk], or [Uncertainty]
 
-Confirm trigger: structure exists but signal quality is degraded.
+  ? [use_when: structure already exists but is noisy, redundant, verbose, diffuse, or insufficiently clear]
+    = must: activate [Refiner]
 
-### Leg 1 – Noise Identification & Reduction
-Analyze the structure to detect:
-- Redundant elements
-- Repeated or overlapping statements
-- Weak or unsupported components
-- Overly verbose or diffuse expression
+  ? [avoid_when: structure has not yet formed or active exploration is still generating new meaning]
+    = must: release [Refiner]
+    @ [transition] [Refiner] -> [Observer]
 
-Remove or compress:
-- Duplicate information
-- Non-essential elaboration
-- Low-signal elements
+  ! [Refiner preserves meaning while improving signal] is accepted
+    @ [support] architecture-cognition.md defines Refiner as signal sharpening without semantic change
 
-Remain strictly within the existing structure. Do not introduce new concepts.
+## Structure Declaration
 
-### Leg 2 – Signal Preservation & Compression
-Refine the remaining structure:
-- Tighten language and expression
-- Align components for clarity and consistency
-- Preserve all essential anchors and relationships
-- Maintain coherence and readability
+/ [InputStructure] -(StructureDeclaration)> [EssentialAnchors], [Noise], [Uncertainty]
 
-Ensure:
-- No meaning is lost
-- No boundaries are redefined
-- No uncertainty is collapsed into false certainty
+& [StructureDeclaration] is the Refiner pass for bounding the refinement target
+  + [target] is the exact structure to refine
+  + [scope] is what belongs inside the refinement pass
+  + [outside] is material not to be changed
+  + [problem] is redundancy, noise, verbosity, ambiguity, or lack of clarity
 
-Output a cleaner, sharper version of the same structure.
+  ? [use_when: refinement is requested or triggered]
+    = must: declare [target]
+    = must: declare [resolution_level]
+    = must: declare [problem]
 
-## Inference Declaration (Runtime Behavior)
-This skill runs as a bounded compression pass inside the forward pass.
-- Operates on already-formed structures only.
-- Performs targeted reduction and tightening.
-- Does not generate new anchors or relationships.
-- May run in single or limited iterative passes if refinement continues to yield improvement.
-- Stops when no further meaningful compression or clarity gain is achieved.
-All outputs remain structurally equivalent to the input, with improved signal quality.
+  = must: identify [essential_anchor]
+  = must: identify [noise]
+  = must: preserve [uncertainty]
 
-## Core Rules (always enforce)
-- Preserve meaning — never alter the underlying structure or intent.
-- Do not introduce new claims, anchors, or relationships.
-- Do not remove essential elements or weaken valid structure.
-- Do not collapse uncertainty into false certainty.
-- Improve clarity without changing semantics.
-- Stay under self-monitoring supervision to prevent over-compression or distortion.
+  ? [target boundary is unclear]
+    @ [transition] [Refiner] -> [Observer]
+    = must: re-delineate before compression
 
-## Integration Rules
-- Operates after structure has been generated or articulated.
-- May follow generative or exploratory processes to improve output quality.
-- Can be applied iteratively as structure evolves.
-- Complements expansion-oriented processes by restoring signal clarity.
+## Noise Reduction
 
-## Boundaries / When Not to Use
-- Do not use when structure has not yet been formed.
-- Do not use during active exploration or generation.
-- Do not use as a substitute for validation or boundary definition.
-- Do not use when compression would remove necessary detail.
+& [NoiseReduction] is the Refiner pass for removing non-essential structure
+  + [duplicate] is repeated equivalent content
+  + [overlap] is partially redundant content
+  + [low_signal] is content that does not support the active purpose
+  + [unsupported_component] is material that should not be strengthened by refinement
+
+  ? [noise exists]
+    = must: invoke [NoiseReduction]
+
+  = must: remove or compress [duplicate]
+  = must: reduce [overlap]
+  = should: remove [low_signal] when it is not an essential anchor
+  = must: preserve [unsupported_component] only as uncertainty, assumption, or removed material
+
+  ? [removal may delete meaning]
+    = must: stop removal
+    = must: mark [DistortionRisk]
+
+## Signal Preservation
+
+& [SignalPreservation] is the Refiner pass for retaining meaning while tightening form
+  + [meaning] is the semantic content of the input structure
+  + [boundary] is the active subject and scope of the structure
+  + [lineage] is the source relation that must remain inspectable
+  + [uncertainty] is unresolved material that must not be collapsed
+
+  ? [compression is being applied]
+    = must: invoke [SignalPreservation]
+
+  = must: preserve [meaning]
+  = must: preserve [boundary]
+  = must: preserve [essential_anchor]
+  = must: preserve [lineage]
+  = must: preserve [uncertainty]
+  = verify: [compressed_structure] is structurally equivalent to [input_structure]
+
+  ? [claim support is unclear]
+    @ [transition] [Refiner] -> [Honesty]
+    = must: avoid strengthening the claim
+
+  ? [lineage or anchor preservation matters]
+    @ [transition] [Refiner] -> [Scribe]
+
+## Compression Control
+
+& [CompressionControl] is the Refiner pass for iteration and stopping
+  + [compression_gain] is meaningful improvement in clarity, brevity, consistency, or usability
+  + [overcompression] is loss of nuance, support, boundary, or useful detail
+  + [iteration] is a refinement pass over the structure
+
+  ? [refinement can continue]
+    = may: run another [iteration]
+
+  = verify: each [iteration] produces [compression_gain]
+  = stop_when: no meaningful compression gain remains
+  = stop_when: overcompression risk appears
+
+  ? [overcompression appears]
+    = must: restore essential detail
+    = must: mark [DistortionRisk]
+
+## Core Constraints
+
+- must: operate only on already-formed structure
+- must: preserve meaning, boundary, lineage, and uncertainty
+- must: keep outputs structurally equivalent to inputs
+- must: stop before compression becomes distortion
+- should: improve clarity, consistency, brevity, and usability
+- should: use limited iterative passes
+- never: introduce new claims, anchors, relationships, or requirements
+- never: remove essential anchors for the sake of brevity
+- never: collapse uncertainty into false certainty
+- never: substitute refinement for validation or delineation
+- never: replace the living whole with a polished representation
 
 ## Resolution
-Noisy or diffuse structures are transformed into clear, compact, high-signal representations. The refined output preserves all essential meaning while improving readability, precision, and usability for further reasoning or integration.
+
+& [RefinerResolution] is the result of refinement
+  + [compressed_structure] is the cleaner equivalent output
+  + [no_change] is the decision that refinement would not improve the structure
+  + [distortion_risk] is the reason refinement should stop or be reversed
+  + [uncertainty] is unresolved material preserved through the pass
+
+  = must: output [compressed_structure], [no_change], [distortion_risk], or [uncertainty]
+
+  ! [Refiner resolves by reducing noise while preserving semantic equivalence] is accepted
+    @ [support] [StructureDeclaration], [NoiseReduction], [SignalPreservation], and [CompressionControl] define the runtime path
