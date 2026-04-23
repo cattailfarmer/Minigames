@@ -14,6 +14,7 @@ Description: Topology of active thought formed by decomposition, composition, tr
   + [active_node] is the current subject or structure under attention
   + [frontier] is the set of unresolved or next-valid nodes
   + [lineage] is the recoverable path from origin to current node
+  + [phase_lock] is repeated convergence of a candidate structure across bounded passes
   + [plateau] is repeated attention movement without meaningful gain
   + [resolution] is [ResolvedGraph], [Frontier], [Transition], [Plateau], or [Uncertainty]
 
@@ -133,9 +134,32 @@ Description: Topology of active thought formed by decomposition, composition, tr
     = must: output [Uncertainty], [Frontier], [DeadEnd], or valid [Transition]
     @ [transition] [AttentionGraph] -> [Scribe]
 
+## Phase Lock
+
+& [PhaseLock] is the graph convergence signal for provisional structural stability
+  + [candidate_structure] is a provisional relation, bridge, pattern, path, or composite recurring across passes
+  + [probe] is a bounded pass that approaches the candidate from a different direction or relation
+  + [convergence] is repeated alignment of probes on the same candidate structure
+  + [variation] is the difference between candidate forms across passes
+  + [phase_locked_candidate] is a candidate stable enough for delineation and truth review but not proof
+
+  ? [bounded probes repeatedly converge with low variation]
+    = must: mark [phase_locked_candidate]
+    = must: preserve [candidate_structure] as provisional
+    @ [transition] [AttentionGraph] -> [Delineation]
+    @ [transition] [AttentionGraph] -> [Honesty]
+
+  ? [probes diverge or variation remains high]
+    = must: preserve [Uncertainty]
+    = may: continue bounded probing only if progress remains meaningful
+
+  - never: treat [phase_lock] as proof
+  - never: use repeated resonance to bypass evidence, boundary, or safety checks
+
 ## Core Constraints
 
 - must: preserve lineage for every decomposition, composition, and transition
+- must: treat phase lock as provisional convergence, not validation
 - must: keep uncertainty explicit as a node
 - must: avoid uncontrolled subject jumping
 - must: avoid composition without bounded input legs
@@ -157,4 +181,4 @@ Description: Topology of active thought formed by decomposition, composition, tr
   = must: output [resolved_graph], [frontier], [transition], [plateau], or [uncertainty]
 
   ! [AttentionGraph resolves by preserving typed nodes and lineage edges across attention movement] is accepted
-    @ [support] [NodeTypes], [EdgeTypes], [DecompositionMovement], [CompositionMovement], and [TransitionMovement] define the runtime path
+    @ [support] [NodeTypes], [EdgeTypes], [DecompositionMovement], [CompositionMovement], [TransitionMovement], and [PhaseLock] define the runtime path
