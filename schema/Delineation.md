@@ -50,6 +50,7 @@ Description: Canonical `/` decomposition protocol for identifying the true subje
   + [true_subject] is the subject that best accounts for current purpose, evidence, and required action
   + [purpose] is why the subject matters now
   + [scope] is the intended resolution level
+  + [visible_surface] is the observable contour, attributes, interfaces, context, and reachable structure of the candidate subject
 
   ? [field contains multiple possible subjects]
     = must: identify [candidate_subject]
@@ -60,7 +61,25 @@ Description: Canonical `/` decomposition protocol for identifying the true subje
     ~ [subject] is provisional
     = must: emit [uncertainty]
 
+  = must: inspect [visible_surface] before final boundary drawing
   = verify: [true_subject] has purpose, boundary relevance, and inspectable value
+
+## Visible Surface Recognition
+
+& [VisibleSurfaceRecognition] is the Delineation pass that envelops the subject before boundary finalization
+  + [visible_surface] is the observable outer contour and accessible internal structure of the subject
+  + [interface] is where the subject touches exterior subjects, systems, users, or dependencies
+  + [observable_attribute] is a source-derived quality visible before interpretation
+  + [unseen_region] is relevant structure not yet inspectable
+
+  ? [use_when: subject identity or boundary may be premature]
+    = must: inspect [visible_surface]
+    = must: identify [interface]
+    = must: identify [observable_attribute]
+    = must: preserve [unseen_region] as [uncertainty]
+
+  = verify: boundary is drawn after visible surface recognition
+  - never: finalize boundary from a partial contour when unresolved regions matter
 
 ## Recognition Supports
 
@@ -110,6 +129,51 @@ Description: Canonical `/` decomposition protocol for identifying the true subje
 
   ? [false_identity exists]
     = must: preserve relation rather than shared identity
+
+## Inverse Weaver
+
+& [InverseWeaver] is the Delineation pass that marks what must not be composed
+  + [not_woven] is material that must remain separate from the active subject or composite
+  + [separation_reason] is the boundary, evidence, risk, identity, or purpose reason for non-composition
+  + [protected_distinction] is a difference that must survive later synthesis
+
+  ? [use_when: related material is near the subject but should not be fused]
+    = must: identify [not_woven]
+    = must: identify [separation_reason]
+    = must: preserve [protected_distinction]
+    @ [reference] faculties/faculty-Weaver.md
+
+  ? [Weaver later composes adjacent parts]
+    = must: preserve [protected_distinction]
+
+  - never: allow relational proximity to imply shared identity
+  - never: allow aesthetic fit to erase boundary evidence
+
+## Normalization
+
+& [Normalization] is the Delineation pass that fits output form to subject identity and intended use
+  + [scope] is the intended use boundary for the output
+  + [audience] is the expected reader, caller, agent, or downstream process
+  + [resolution_level] is the amount of detail required for the subject to be usable
+  + [form] is the structure, language, and granularity appropriate to the subject
+  + [overfit] is excess detail, ceremony, or specificity beyond the intended use
+  + [underfit] is missing detail needed for self-contained understanding or safe action
+
+  ? [use_when: delineated output must be expressed, handed off, stored, or acted upon]
+    = must: identify [scope]
+    = must: identify [resolution_level]
+    = must: shape [form] to [scope] and [audience]
+    = must: preserve self-contained definitions required by the active subject
+
+  ? [overfit exists]
+    @ [transition] [Normalization] -> [Refiner]
+
+  ? [underfit exists]
+    = must: increase resolution only inside [scope]
+
+  = verify: normalized output matches subject identity and intended use
+  - never: expand unrelated scope to satisfy local underfit
+  - never: compress below safe self-contained understanding
 
 ## Grounding Modes
 
@@ -162,6 +226,7 @@ Description: Canonical `/` decomposition protocol for identifying the true subje
   = verify: [outside] does not belong to [subject]
   = verify: [references] remain outside but relevant
   = verify: [uncertainty] is visible when unresolved
+  = verify: [Normalization] preserves subject identity and intended use
 
   ? [fault exists]
     / [resolved] -(FaultIsolation)> [Resolved], [Fault], [Uncertainty]
@@ -169,13 +234,16 @@ Description: Canonical `/` decomposition protocol for identifying the true subje
 ## Core Constraints
 
 - must: identify the true subject before attribution or action when boundary matters
+- must: inspect visible surface before final boundary drawing when identity is uncertain
 - must: preserve inside, outside, references, and uncertainty distinctly
 - must: attribute only source-derived material that survives the boundary test
 - must: prefer explicit relation over false shared identity
+- must: normalize output to intended scope before handoff or action
 - should: use support functions only when they improve boundary clarity
 - should: stop decomposition when practical utility no longer improves
 - never: fuse incompatible subjects into one false boundary
 - never: fragment one coherent subject without need
+- never: weave material that [InverseWeaver] protects as separate
 - never: force resolution beyond what evidence supports
 - never: use Delineation for creative synthesis when Weaver is the active faculty
 
@@ -190,4 +258,4 @@ Description: Canonical `/` decomposition protocol for identifying the true subje
   = must: output [resolved], [references], [uncertainty], or [transition]
 
   ! [Delineation resolves by decomposing a field into bounded subject material and uncertainty] is accepted
-    @ [support] [DecompositionForm], [SubjectRecognition], [BoundaryDrawing], and [DelineationValidation] define the runtime path
+    @ [support] [DecompositionForm], [SubjectRecognition], [VisibleSurfaceRecognition], [BoundaryDrawing], [InverseWeaver], [Normalization], and [DelineationValidation] define the runtime path
