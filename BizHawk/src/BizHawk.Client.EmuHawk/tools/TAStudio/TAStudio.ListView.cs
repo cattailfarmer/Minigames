@@ -1,0 +1,1489 @@
+using System.Diagnostics;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Globalization;
+
+using BizHawk.Emulation.Common;
+using BizHawk.Common.NumberExtensions;
+using BizHawk.Client.Common;
+using BizHawk.Common;
+using BizHawk.Common.CollectionExtensions;
+
+namespace BizHawk.Client.EmuHawk
+{
+	public partial class TAStudio
+	{
+		// Input Painting
+		private string _startBoolDrawColumn = "";
+		private string _startAxisDrawColumn = "";
+		private bool _boolPaintState;
+		private int _axisPaintState;
+		private bool _patternPaint;
+		private bool _startCursorDrag;
+		private bool _startSelectionDrag;
+		private bool _selectionDragState;
+		private bool _suppressContextMenu;
+		private int _startRow;
+		private int _batchEditMinFrame = -1;
+		private bool _batchEditing;
+
+		// Editing analog input
+		private string/*?*/ __axisEditColumn = null; // __ do not access directly
+		private string/*?*/ AxisEditColumn
+		{
+			get => __axisEditColumn;
+			set
+			{
+				// If we're changing column, exit axis editing mode first.
+				if (AxisEditingMode && value != null) __axisEditColumn = null;
+
+				__axisEditColumn = value;
+				_axisEditYPos = -1;
+
+				if (AxisEditingMode)
+				{
+					_axisTypedValue = "";
+					_didAxisType = false;
+					_axisRestoreId = CurrentTasMovie.ChangeLog.MostRecentId;
+					TasView.SuspendHotkeys = true;
+				}
+				else
+				{
+					if (_didAxisType)
+					{
+						_didAxisType = false;
+						CurrentTasMovie.ChangeLog.EndBatch();
+					}
+					TasView.SuspendHotkeys = false;
+				}
+			}
+		}
+
+		private string _axisTypedValue = "";
+		private bool _didAxisType;
+		private int _axisEditYPos = -1;
+		private int _axisRestoreId;
+
+		/// <summary>
+		/// Begin editing an axis value by dragging the mouse.
+		/// </summary>
+		/// <param name="yPos">The initial vertical position of the cursor.</param>
+		private void BeginAxisMouseEdit(int yPos)
+		{
+			Debug.Assert(AxisEditingMode, "Don't begin axis mouse edit outside of axis editing mode.");
+
+			_axisEditYPos = yPos;
+			_axisTypedValue = "";
+			_didAxisType = false;
+			_axisRestoreId = CurrentTasMovie.ChangeLog.MostRecentId;
+
+			CurrentTasMovie.ChangeLog.BeginNewBatch($"Axis mouse edit, frame {TasView.SelectedRows.First()}");
+		}
+
+		public bool AxisEditingMode => AxisEditColumn != null;
+
+		// Right-click dragging
+		private string[] _rightClickInput;
+		private string[] _rightClickOverInput;
+		private int _rightClickFrame = -1;
+		private int _rightClickLastFrame = -1;
+		private bool _rightClickShift, _rightClickControl, _rightClickAlt;
+		private bool _leftButtonHeld;
+
+		private bool MouseButtonHeld => _rightClickFrame != -1 || _leftButtonHeld;
+
+		private int _seekStartFrame;
+		private bool _pauseAfterSeeking;
+
+		private readonly Dictionary<string, bool> _alternateRowColor = new();
+
+		private ControllerDefinition ControllerType => MovieSession.MovieController.Definition;
+
+		public bool WasRecording { get; set; }
+		public AutoPatternBool[] BoolPatterns;
+		public AutoPatternAxis[] AxisPatterns;
+
+		public void StopSeeking(bool skipRecModeCheck = false)
+		{
+			_shouldMoveGreenArrow = true;
+			if (_seekingTo == -1) return;
+
+			if (WasRecording && !skipRecModeCheck)
+			{
+				TastudioRecordMode();
+				WasRecording = false;
+			}
+
+			_seekingByEdit = false;
+			_seekingTo = -1;
+			MainForm.PauseOnFrame = null; // This being unset is how MainForm knows we are not seeking, and controls TurboSeek.
+			if (_pauseAfterSeeking)
+			{
+				MainForm.PauseEmulator();
+			}
+
+			RefreshDialog();
+			UpdateProgressBar();
+		}
+
+		private Bitmap ts_v_arrow_green_blue => Properties.Resources.ts_v_arrow_green_blue;
+		private Bitmap ts_h_arrow_green_blue => Properties.Resources.ts_h_arrow_green_blue;
+		private Bitmap ts_v_arrow_blue => Properties.Resources.ts_v_arrow_blue;
+		private Bitmap ts_h_arrow_blue => Properties.Resources.ts_h_arrow_blue;
+		private Bitmap ts_v_arrow_green => Properties.Resources.ts_v_arrow_green;
+		private Bitmap ts_h_arrow_green => Properties.Resources.ts_h_arrow_green;
+
+		private Bitmap icon_marker => Properties.Resources.icon_marker;
+		private Bitmap icon_anchor_lag => Properties.Resources.icon_anchor_lag;
+		private Bitmap icon_anchor => Properties.Resources.icon_anchor;
+
+		private void TasView_QueryItemIcon(int index, RollColumn column, ref Bitmap bitmap, ref int offsetX, ref int offsetY)
+		{
+			if (!_engaged || _initializing)
+			{
+				return;
+			}
+
+			var overrideIcon = QueryItemIconCallback(index, column.Name);
+
+			if (overrideIcon != null)
+			{
+				bitmap = overrideIcon;
+				return;
+			}
+
+			var columnName = column.Name;
+
+			if (columnName == CursorColumnName)
+			{
+				if (TasView.HorizontalOrientation)
+				{
+					offsetX = -1;
+					offsetY = 5;
+				}
+
+				if (index == Emulator.Frame)
+				{
+					bitmap = index == _seekingTo
+						? TasView.HorizontalOrientation ? ts_v_arrow_green_blue : ts_h_arrow_green_blue
+						: TasView.HorizontalOrientation ? ts_v_arrow_blue : ts_h_arrow_blue;
+				}
+				else if (index == RestorePositionFrame)
+				{
+					bitmap = TasView.HorizontalOrientation ?
+						ts_v_arrow_green :
+						ts_h_arrow_green;
+				}
+			}
+			else if (columnName == FrameColumnName)
+			{
+				offsetX = -3;
+				offsetY = 1;
+
+				if (Settings.DenoteMarkersWithIcons && CurrentTasMovie.Markers.IsMarker(index))
+				{
+					bitmap = icon_marker;
+				}
+				else if (Settings.DenoteStatesWithIcons)
+				{
+					var record = CurrentTasMovie[index];
+					if (record.HasState) bitmap = record.Lagged is true ? icon_anchor_lag : icon_anchor;
+				}
+			}
+		}
+
+		private void TasView_QueryItemBkColor(int index, RollColumn column, ref Color color)
+		{
+			if (!_engaged || _initializing)
+			{
+				return;
+			}
+
+			Color? overrideColor = QueryItemBgColorCallback(index, column.Name);
+
+			if (overrideColor.HasValue)
+			{
+				color = overrideColor.Value;
+				return;
+			}
+
+			string columnName = column.Name;
+
+			if (columnName == CursorColumnName)
+			{
+				color = Color.FromArgb(0xFE, 0xFF, 0xFF);
+			}
+
+			if (columnName == FrameColumnName)
+			{
+				if (Emulator.Frame != index && Settings.DenoteMarkersWithBGColor && CurrentTasMovie.Markers.IsMarker(index))
+				{
+					color = Palette.Marker_FrameCol;
+				}
+				else
+				{
+					color = Color.FromArgb(0x60, 0xFF, 0xFF, 0xFF);
+				}
+			}
+			else if (columnName == AxisEditColumn && TasView.IsRowSelected(index))
+			{
+				color = Palette.AnalogEdit_Col;
+			}
+			else if (_alternateRowColor.GetValueOrPut(
+				columnName,
+				columnName1 => {
+					var playerNumber = ControllerDefinition.PlayerNumber(columnName1);
+					return playerNumber % 2 is 0 && playerNumber is not 0;
+				}))
+			{
+				color = Color.FromArgb(0x0D, 0x00, 0x00, 0x00);
+			}
+		}
+
+		private void TasView_QueryRowBkColor(int index, ref Color color)
+		{
+			if (!_engaged || _initializing)
+			{
+				return;
+			}
+
+			var record = CurrentTasMovie[index];
+
+			if (_seekingTo == index)
+			{
+				color = Palette.CurrentFrame_InputLog;
+			}
+			else if (_seekingTo == -1 && Emulator.Frame == index)
+			{
+				color = Palette.CurrentFrame_InputLog;
+			}
+			else if (record.Lagged.HasValue)
+			{
+				if (!record.HasState && Settings.DenoteStatesWithBGColor)
+				{
+					color = record.Lagged.Value
+						? Palette.LagZone_InputLog
+						: Palette.GreenZone_InputLog;
+				}
+				else
+				{
+					color = record.Lagged.Value
+						? Palette.LagZone_InputLog_Stated
+						: Palette.GreenZone_InputLog_Stated;
+				}
+			}
+			else if (record.WasLagged.HasValue)
+			{
+				color = record.WasLagged.Value
+					? Palette.LagZone_InputLog_Invalidated
+					: Palette.GreenZone_InputLog_Invalidated;
+			}
+			else
+			{
+				color = Color.FromArgb(0xFF, 0xFE, 0xEE);
+			}
+		}
+
+		private bool TasView_QueryShouldSelect(MouseButtons button)
+		{
+			if (AxisEditingMode)
+			{
+				if (ModifierKeys == Keys.Shift || ModifierKeys == Keys.Control)
+				{
+					// This just makes it easier to select multiple rows with axis editing mode, by allowing multiple row selection when clicking columns that aren't the frame column.
+					return true;
+				}
+				else if (TasView.CurrentCell.Column.Name == AxisEditColumn && TasView.IsRowSelected(TasView.CurrentCell.RowIndex.Value))
+				{
+					// We will start editing via mouse, so don't unselect if we have multiple selected rows.
+					return false;
+				}
+				else
+				{
+					// Exit axis editing mode (ideally we wouldn't change state in the query method, but we can't do this on mouse down because the selection will have already changed)
+					AxisEditColumn = null;
+					SetTasViewRowCount();
+				}
+			}
+
+			if (TasView.CurrentCell.Column.Name == FrameColumnName)
+			{
+				return true;
+			}
+			else if (ModifierKeys == Keys.Shift)
+			{
+				return false;
+			}
+			else
+			{
+				// This may not be necessary, but it is the behavior we've always had based on copying what TASeditor does.
+				// Ctrl-click on a button selects the same as a regular click: the only row left selected is the one clicked
+				if (ModifierKeys == Keys.Control) TasView.DeselectAll();
+				return true;
+			}
+		}
+
+		private readonly string[] _formatCache = Enumerable.Range(1, 10).Select(i => $"D{i}").ToArray();
+
+		/// <returns><paramref name="index"/> with leading zeroes such that every frame in the movie will be printed with the same number of digits</returns>
+		private string FrameToStringPadded(int index)
+			=> index.ToString(_formatCache[Math.Max(
+				4,
+				NumberExtensions.Log10(Math.Max(CurrentTasMovie.InputLogLength, 1)))]);
+
+		private void TasView_QueryItemText(int index, RollColumn column, out string text, ref int offsetX, ref int offsetY)
+		{
+			if (!_engaged || _initializing)
+			{
+				text = "";
+				return;
+			}
+
+			var overrideText = QueryItemTextCallback(index, column.Name);
+			if (overrideText != null)
+			{
+				text = overrideText;
+				return;
+			}
+
+			try
+			{
+				text = "";
+				var columnName = column.Name;
+
+				if (columnName == CursorColumnName)
+				{
+					int branchIndex = CurrentTasMovie.Branches.IndexOfFrame(index);
+					if (branchIndex != -1)
+					{
+						text = (branchIndex + 1).ToString();
+					}
+				}
+				else if (columnName == FrameColumnName)
+				{
+					offsetX = TasView.HorizontalOrientation ? 2 : 7;
+					text = FrameToStringPadded(index);
+				}
+				else
+				{
+					// Display typed float value (string "-" can't be parsed, so CurrentTasMovie.DisplayValue can't return it)
+					bool axisEditing = columnName == AxisEditColumn && TasView.IsRowSelected(index);
+					if (axisEditing && _didAxisType)
+					{
+						text = _axisTypedValue;
+					}
+					else if (index < CurrentTasMovie.InputLogLength)
+					{
+						text = CurrentTasMovie.DisplayValue(index, columnName, !axisEditing);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				text = "";
+				DialogController.ShowMessageBox("Encountered unrecoverable error while drawing the input roll.\n" +
+					"The current movie will be closed without saving.\n" +
+					$"The exception was:\n\n{ex}", caption: "Failed to draw input roll");
+				TastudioStopMovie();
+				StartNewTasMovie();
+			}
+		}
+
+		private bool TasView_QueryFrameLag(int index, bool hideWasLag)
+		{
+			var lag = CurrentTasMovie[index];
+			return (lag.Lagged.HasValue && lag.Lagged.Value) || (hideWasLag && lag.WasLagged.HasValue && lag.WasLagged.Value);
+		}
+
+		private void TasView_ColumnClick(object sender, InputRoll.ColumnClickEventArgs e)
+		{
+			if (TasView.AnyRowsSelected)
+			{
+				var columnName = e.Column!.Name;
+
+				if (columnName == FrameColumnName)
+				{
+					CurrentTasMovie.Markers.Add(TasView.SelectionEndIndex!.Value, "");
+				}
+				else if (columnName != CursorColumnName)
+				{
+					var buttonName = TasView.CurrentCell.Column!.Name;
+
+					if (ControllerType.BoolButtons.Contains(buttonName))
+					{
+						if (ModifierKeys != Keys.Alt)
+						{
+							// nifty taseditor logic
+							// your TAS Editor logic failed us (it didn't account for non-contiguous `SelectedRows`) --yoshi
+							var selection = TasView.SelectedRows.ToArray(); // sorted asc, length >= 1
+							var allPressed = selection[selection.Length - 1] != CurrentTasMovie.FrameCount // last movie frame can't have input, but can be selected
+								&& selection.All(index => CurrentTasMovie.BoolIsPressed(index, buttonName));
+							CurrentTasMovie.ChangeLog.BeginNewBatch($"{(allPressed ? "Unset" : "Set")} {selection.Length} frames of {buttonName} starting at {selection[0]}");
+							CurrentTasMovie.SingleInvalidation(() =>
+							{
+								foreach (var (start, count) in selection.ChunkConsecutive())
+								{
+									CurrentTasMovie.SetBoolStates(frame: start, count: count, buttonName, val: !allPressed);
+								}
+							});
+							CurrentTasMovie.ChangeLog.EndBatch();
+						}
+						else
+						{
+							BoolPatterns[ControllerType.BoolButtons.IndexOf(buttonName)].Reset();
+							CurrentTasMovie.SingleInvalidation(() =>
+							{
+								foreach (var index in TasView.SelectedRows)
+								{
+									CurrentTasMovie.SetBoolState(index, buttonName, BoolPatterns[ControllerType.BoolButtons.IndexOf(buttonName)].GetNextValue());
+								}
+							});
+						}
+					}
+					else
+					{
+						// feos: there's no default value other than neutral, and we can't go arbitrary here, so do nothing for now
+						// autohold is ignored for axes too for the same reasons: lack of demand + ambiguity
+					}
+				}
+			}
+		}
+
+		private void TasView_ColumnRightClick(object sender, InputRoll.ColumnClickEventArgs e)
+		{
+			var col = e.Column!;
+			if (col.Name is FrameColumnName or CursorColumnName) return;
+
+			col.Emphasis = !col.Emphasis;
+			UpdateAutoFire(col.Name, col.Emphasis);
+			TasView.Refresh();
+		}
+
+		private void UpdateAutoFire()
+		{
+			for (int i = 2; i < TasView.AllColumns.Count; i++)
+			{
+				UpdateAutoFire(TasView.AllColumns[i].Name, TasView.AllColumns[i].Emphasis);
+			}
+		}
+
+		public void UpdateAutoFire(string button, bool? isOn)
+		{
+			// No value means don't change whether it's on or off.
+			isOn ??= TasView.AllColumns.Find(c => c.Name == button).Emphasis;
+
+			// use custom pattern if set
+			bool useCustom = Settings.PatternSelection == TAStudioSettings.PatternSelectionEnum.Custom;
+			// else, set autohold or fire based on setting
+			bool autoHold = Settings.PatternSelection == TAStudioSettings.PatternSelectionEnum.Hold;
+
+			if (ControllerType.BoolButtons.Contains(button))
+			{
+				InputManager.StickyHoldController.SetButtonHold(button, false);
+				InputManager.StickyAutofireController.SetButtonAutofire(button, false);
+				if (!isOn.Value) return;
+
+				if (useCustom)
+				{
+					InputManager.StickyAutofireController.SetButtonAutofire(button, true, BoolPatterns[ControllerType.BoolButtons.IndexOf(button)]);
+				}
+				else if (autoHold)
+				{
+					InputManager.StickyHoldController.SetButtonHold(button, true);
+				}
+				else
+				{
+					InputManager.StickyAutofireController.SetButtonAutofire(button, true);
+				}
+			}
+			else
+			{
+				InputManager.StickyHoldController.SetAxisHold(button, null);
+				InputManager.StickyAutofireController.SetAxisAutofire(button, null);
+				if (!isOn.Value) return;
+
+				int holdValue = ControllerType.Axes[button].Range.EndInclusive; // it's not clear what value to use for auto-hold, just use max i guess
+				if (useCustom)
+				{
+					InputManager.StickyAutofireController.SetAxisAutofire(button, holdValue, AxisPatterns[ControllerType.Axes.IndexOf(button)]);
+				}
+				else if (autoHold)
+				{
+					InputManager.StickyHoldController.SetAxisHold(button, holdValue);
+				}
+				else
+				{
+					InputManager.StickyAutofireController.SetAxisAutofire(button, holdValue);
+				}
+			}
+		}
+
+		private void TasView_ColumnReordered(object sender, InputRoll.ColumnReorderedEventArgs e)
+		{
+			CurrentTasMovie.FlagChanges();
+		}
+
+		private void TasView_MouseEnter(object sender, EventArgs e)
+		{
+			if (ContainsFocus)
+			{
+				TasView.Select();
+			}
+		}
+
+		private void TasView_MouseDown(object sender, MouseEventArgs e)
+		{
+			// Clicking with left while right is held or vice versa does weird stuff
+			if (MouseButtonHeld)
+			{
+				return;
+			}
+
+			// only on mouse button down, check that the pointed to cell is the correct one (can be wrong due to scroll while playing)
+			TasView._programmaticallyChangingRow = true;
+			TasView.PointMouseToNewCell();
+
+			if (e.Button == MouseButtons.Middle)
+			{
+				if (MainForm.EmulatorPaused)
+				{
+					if (_seekingTo != -1)
+					{
+						MainForm.UnpauseEmulator(); // resume seek
+						return;
+					}
+
+					// Restore if we have not emulated PAST restore point and we are not already at restore point.
+					var record = CurrentTasMovie[RestorePositionFrame];
+					if (record.Lagged is null && Emulator.Frame < RestorePositionFrame)
+					{
+						RestorePosition();
+						return;
+					}
+				}
+
+				MainForm.TogglePause();
+				return;
+			}
+
+			if (TasView.CurrentCell is not { RowIndex: int frame, Column: RollColumn targetCol }) return;
+
+			var buttonName = targetCol.Name;
+			WasRecording = CurrentTasMovie.IsRecording() || WasRecording;
+
+			if (e.Button == MouseButtons.Left)
+			{
+				_leftButtonHeld = true;
+
+				if (AxisEditingMode)
+				{
+					if (ModifierKeys is Keys.Control or Keys.Shift)
+					{
+						// User was selecting additional rows.
+					}
+					else
+					{
+						BeginAxisMouseEdit(e.Y);
+					}
+					return;
+				}
+
+				if (targetCol.Name is CursorColumnName)
+				{
+					_startCursorDrag = true;
+					GoToFrame(frame, OnLeftMouseDown: true);
+				}
+				else if (targetCol.Name is FrameColumnName)
+				{
+					if (ModifierKeys == Keys.Alt && CurrentTasMovie.Markers.IsMarker(frame))
+					{
+						// TODO
+						TasView.DragCurrentCell();
+					}
+					else
+					{
+						_startSelectionDrag = true;
+						_selectionDragState = TasView.IsRowSelected(frame);
+					}
+				}
+				else
+				{
+					// Pausing the emulator is insufficient to actually stop frame advancing as the frame advance hotkey can
+					// still take effect. This can lead to desyncs by simultaneously changing input and frame advancing.
+					// So we want to block all frame advance operations while the user is changing input in the piano roll
+					MainForm.BlockFrameAdvance = true;
+
+					if (ControllerType.BoolButtons.Contains(buttonName))
+					{
+						_patternPaint = false;
+						_startBoolDrawColumn = buttonName;
+
+						var altOrShift4State = ModifierKeys & (Keys.Alt | Keys.Shift);
+						if (altOrShift4State is Keys.Alt
+							|| Settings.PatternPaintMode == TAStudioSettings.PatternPaintModeEnum.Always
+							|| (targetCol.Emphasis && Settings.PatternPaintMode == TAStudioSettings.PatternPaintModeEnum.AutoFireOnly))
+						{
+							BoolPatterns[ControllerType.BoolButtons.IndexOf(buttonName)].Reset();
+							_patternPaint = true;
+							_startRow = frame;
+							_boolPaintState = !CurrentTasMovie.BoolIsPressed(frame, buttonName);
+						}
+						else if (altOrShift4State is Keys.Shift)
+						{
+							if (!TasView.AnyRowsSelected) return;
+
+							var iFirstSelectedRow = TasView.FirstSelectedRowIndex;
+							var (firstSel, lastSel) = frame <= iFirstSelectedRow
+								? (frame, iFirstSelectedRow)
+								: (iFirstSelectedRow, frame);
+
+							bool allPressed = true;
+							for (var i = firstSel; i <= lastSel; i++)
+							{
+								if (i == CurrentTasMovie.FrameCount // last movie frame can't have input, but can be selected
+									|| !CurrentTasMovie.BoolIsPressed(i, buttonName))
+								{
+									allPressed = false;
+									break;
+								}
+							}
+							CurrentTasMovie.SetBoolStates(firstSel, lastSel - firstSel + 1, buttonName, !allPressed);
+							_boolPaintState = CurrentTasMovie.BoolIsPressed(lastSel, buttonName);
+						}
+#if false // to match previous behaviour
+						else if (altOrShift4State is not 0)
+						{
+							// TODO: Pattern drawing from selection to current cell
+						}
+#endif
+						else
+						{
+							CurrentTasMovie.ChangeLog.BeginNewBatch($"Paint Bool {buttonName} from frame {frame}");
+
+							CurrentTasMovie.ToggleBoolState(frame, buttonName);
+							_boolPaintState = CurrentTasMovie.BoolIsPressed(frame, buttonName);
+						}
+					}
+					else if (ControllerType.Axes.TryGetValue(buttonName, out AxisSpec spec))
+					{
+						if (frame >= CurrentTasMovie.InputLogLength)
+						{
+							CurrentTasMovie.SetAxisState(frame, buttonName, spec.Neutral);
+							RefreshDialog();
+						}
+
+						_axisPaintState = CurrentTasMovie.GetAxisState(frame, buttonName);
+						if (Settings.PatternPaintMode == TAStudioSettings.PatternPaintModeEnum.Always
+							|| (targetCol.Emphasis && Settings.PatternPaintMode == TAStudioSettings.PatternPaintModeEnum.AutoFireOnly))
+						{
+							AxisPatterns[ControllerType.Axes.IndexOf(buttonName)].Reset();
+							CurrentTasMovie.SetAxisState(frame, buttonName, AxisPatterns[ControllerType.Axes.IndexOf(buttonName)].GetNextValue());
+							_patternPaint = true;
+						}
+						else
+						{
+							_patternPaint = false;
+						}
+
+
+						if (e.Clicks != 2)
+						{
+							CurrentTasMovie.ChangeLog.BeginNewBatch($"Paint Axis {buttonName} from frame {frame}");
+							_startAxisDrawColumn = buttonName;
+						}
+						else // Double-click enters axis editing mode
+						{
+							if (AxisEditColumn != null && (AxisEditColumn != buttonName || !TasView.IsRowSelected(frame)))
+							{
+								AxisEditColumn = null;
+							}
+							else
+							{
+								AxisEditColumn = buttonName;
+								BeginAxisMouseEdit(e.Y);
+							}
+
+							RefreshDialog();
+						}
+					}
+				}
+			}
+			else if (e.Button == MouseButtons.Right)
+			{
+				if (targetCol.Name is FrameColumnName && frame < CurrentTasMovie.InputLogLength)
+				{
+					_rightClickControl = (ModifierKeys | Keys.Control) == ModifierKeys;
+					_rightClickShift = (ModifierKeys | Keys.Shift) == ModifierKeys;
+					_rightClickAlt = (ModifierKeys | Keys.Alt) == ModifierKeys;
+					if (TasView.IsRowSelected(frame))
+					{
+						_rightClickInput = new string[TasView.SelectedRows.Count()];
+						_rightClickFrame = TasView.SelectionStartIndex!.Value;
+						try
+						{
+							CurrentTasMovie.GetLogEntries().CopyTo(_rightClickFrame, _rightClickInput, 0, _rightClickInput.Length);
+						}
+						catch { }
+						if (_rightClickControl && _rightClickShift)
+						{
+							_rightClickFrame += _rightClickInput.Length;
+						}
+					}
+					else
+					{
+						_rightClickInput = new string[1];
+						_rightClickInput[0] = CurrentTasMovie.GetInputLogEntry(frame);
+						_rightClickFrame = frame;
+					}
+
+					_rightClickLastFrame = -1;
+
+					if (_rightClickAlt || _rightClickControl || _rightClickShift)
+					{
+						// TODO: Turn off ChangeLog.IsRecording and handle the GeneralUndo here.
+						string undoStepName = "Right-Click Edit:";
+						if (_rightClickShift)
+						{
+							undoStepName += " Extend Input";
+							if (_rightClickControl)
+							{
+								undoStepName += ", Insert";
+							}
+						}
+						else
+						{
+							if (_rightClickControl)
+							{
+								undoStepName += " Copy";
+							}
+							else // _rightClickAlt
+							{
+								undoStepName += " Move";
+							}
+						}
+
+						CurrentTasMovie.ChangeLog.BeginNewBatch(undoStepName);
+					}
+				}
+			}
+		}
+
+		/// <returns>Returns true if the input list was redrawn.</returns>
+		private bool EndBatchEdit()
+		{
+			_batchEditing = false;
+			if (_batchEditMinFrame != -1)
+			{
+				return FrameEdited(_batchEditMinFrame);
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// Disables recording mode, ensures we are in the greenzone, and does autorestore if needed.
+		/// If a mouse button is down, only tracks the edit so we can do this stuff on mouse up.
+		/// </summary>
+		/// <param name="frame">The frame that was just edited, or the earliest one if multiple were edited.</param>
+		/// <returns>Returns true if the input list was redrawn.</returns>
+		public bool FrameEdited(int frame)
+		{
+			GreenzoneInvalidatedCallback?.Invoke(frame); // lua callback
+
+			if (_suspendEditLogic) return false;
+
+			// Recording multiple frames, or auto-extending the movie, while unpaused should count as a single undo action.
+			if (CurrentTasMovie.LastEditWasRecording && !MainForm.EmulatorPaused)
+			{
+				IMovieChangeLog log = CurrentTasMovie.ChangeLog;
+				if (_lastRecordAction == -1)
+				{
+					_lastRecordAction = log.MostRecentId;
+				}
+				else
+				{
+					bool merged = log.MergeActions(_lastRecordAction, log.MostRecentId);
+					if (!merged) _lastRecordAction = log.MostRecentId;
+				}
+			}
+			else
+			{
+				_lastRecordAction = -1;
+			}
+
+			if (CurrentTasMovie.LastEditWasRecording)
+			{
+				// With any recording edit, we don't need to do anything more here.
+				return false;
+			}
+
+			bool needsRefresh = !_batchEditing;
+			if (MouseButtonHeld || _batchEditing)
+			{
+				if (_batchEditMinFrame == -1)
+				{
+					_batchEditMinFrame = frame;
+				}
+				else
+				{
+					_batchEditMinFrame = Math.Min(_batchEditMinFrame, frame);
+				}
+			}
+			else
+			{
+				if (StopRecordingOnNextEdit)
+				{
+					// Lua users will want to preserve recording mode.
+					TastudioPlayMode(true);
+				}
+				StopRecordingOnNextEdit = true;
+
+				if (Emulator.Frame > frame)
+				{
+					if (_shouldMoveGreenArrow)
+					{
+						RestorePositionFrame = _seekingTo != -1 ? _seekingTo : Emulator.Frame;
+					}
+
+					GoToFrame(frame);
+					if (Settings.AutoRestoreLastPosition)
+					{
+						RestorePosition();
+					}
+					_seekingByEdit = true; // must be after GoToFrame & RestorePosition (they'll set _seekingByEdit to false)
+
+					// Green arrow should not move again until the user changes frame.
+					// This means any state load or unpause/frame advance/seek, that is not caused by an input edit.
+					// This is so that the user can make multiple edits with auto restore off, in any order, before a manual restore.
+					_shouldMoveGreenArrow = false;
+
+					needsRefresh = false; // Refresh will happen via GoToFrame.
+				}
+				else if (Emulator.Frame == frame - 1)
+				{
+					// In this case our regular capture logic won't get the chance
+					// to do a force capture for this edited frame. So do it here.
+					CurrentTasMovie.TasStateManager.Capture(Emulator.Frame, Emulator.AsStatable(), true);
+				}
+				_batchEditMinFrame = -1;
+			}
+
+			if (needsRefresh)
+			{
+				if (TasView.IsPartiallyVisible(frame) || frame < TasView.FirstVisibleRow)
+				{
+					// frame < FirstVisibleRow: Greenzone in visible rows has been invalidated
+					RefreshDialog();
+					return true;
+				}
+				else
+				{
+					if (_undoForm != null && !_undoForm.IsDisposed)
+					{
+						_undoForm.UpdateValues();
+					}
+					if (TasView.RowCount != CurrentTasMovie.InputLogLength + 1)
+					{
+						// Row count must always be kept up to date even if last row is not directly visible.
+						TasView.RowCount = CurrentTasMovie.InputLogLength + 1;
+						return true;
+					}
+				}
+			}
+
+			return false;
+		}
+
+		private void ClearLeftMouseStates()
+		{
+			_leftButtonHeld = false;
+			_startCursorDrag = false;
+			_startSelectionDrag = false;
+			_startBoolDrawColumn = "";
+			_startAxisDrawColumn = "";
+			TasView.ReleaseCurrentCell();
+
+			CurrentTasMovie.ChangeLog.EndBatch();
+
+			_axisEditYPos = -1; // exit mouse edit mode
+
+			MainForm.BlockFrameAdvance = false;
+
+			RefreshDialog(); // Even if no edits happened, the undo form may need updating because we potentially ended a batch.
+		}
+
+		private void TasView_MouseUp(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right && !TasView.IsPointingAtColumnHeader
+				&& !_suppressContextMenu && !_leftButtonHeld && TasView.AnyRowsSelected)
+			{
+				if (CurrentTasMovie.FrameCount < TasView.SelectionEndIndex)
+				{
+					// trying to be smart here
+					// if a loaded branch log is shorter than selection, keep selection until you attempt to call context menu
+					// you might need it when you load again the branch where this frame exists
+					TasView.DeselectAll();
+					SetTasViewRowCount();
+				}
+				else
+				{
+					var offset = new Point(0);
+					var topLeft = Cursor.Position;
+					var bottomRight = new Point(
+						topLeft.X + RightClickMenu.Width,
+						topLeft.Y + RightClickMenu.Height);
+					var screen = DrawingExtensions.BoundsOfDisplayContaining(topLeft)
+						?? default; //TODO is zeroed the correct fallback value? --yoshi
+					// if we don't fully fit, move to the other side of the pointer
+					if (bottomRight.X > screen.Right)
+					{
+						offset.X -= RightClickMenu.Width;
+					}
+					if (bottomRight.Y > screen.Bottom)
+					{
+						offset.Y -= RightClickMenu.Height;
+					}
+					topLeft.Offset(offset);
+					// if the screen is insultingly tiny, best we can do is avoid negative pos
+					RightClickMenu.Show(
+						Math.Max(0, topLeft.X),
+						Math.Max(0, topLeft.Y));
+				}
+			}
+			else if (e.Button == MouseButtons.Left)
+			{
+				ClearLeftMouseStates();
+			}
+
+			if (e.Button == MouseButtons.Right)
+			{
+				if (_rightClickFrame != -1)
+				{
+					_rightClickInput = null;
+					_rightClickOverInput = null;
+					_rightClickFrame = -1;
+					CurrentTasMovie.ChangeLog.EndBatch();
+				}
+			}
+
+			EndBatchEdit(); // We didn't call BeginBatchEdit, but implicitly began one with mouse down. We must explicitly end it.
+
+			_suppressContextMenu = false;
+		}
+
+		private void WheelSeek(int count)
+		{
+			if (_seekingTo != -1)
+			{
+				_shouldMoveGreenArrow = true;
+				_seekingTo = Math.Max(_seekingTo - count, 0);
+
+				if (count > 0 && Emulator.Frame >= _seekingTo)
+				{
+					GoToFrame(_seekingTo);
+				}
+
+				RefreshDialog();
+			}
+			else
+			{
+				GoToFrame(Math.Max(Emulator.Frame - count, 0));
+			}
+		}
+
+		private void TasView_MouseWheel(object sender, MouseEventArgs e)
+		{
+			if (TasView.RightButtonHeld && TasView?.CurrentCell.RowIndex.HasValue == true)
+			{
+				_suppressContextMenu = true;
+				int notch = e.Delta / 120;
+				WheelSeek(notch);
+			}
+		}
+
+		public void SetMarker() => SetMarker(Emulator.Frame);
+
+		private void SetMarker(int frame)
+		{
+			TasMovieMarker/*?*/ existingMarker = CurrentTasMovie.Markers.FirstOrDefault(m => m.Frame == frame);
+
+			if (existingMarker != null)
+			{
+				MarkerControl.EditMarkerPopUp(existingMarker);
+			}
+			else
+			{
+				MarkerControl.AddMarker(frame);
+			}
+		}
+
+		public void RemoveMarker()
+		{
+			TasMovieMarker/*?*/ existingMarker = CurrentTasMovie.Markers.FirstOrDefault(m => m.Frame == Emulator.Frame);
+			if (existingMarker == null) return;
+
+			CurrentTasMovie.Markers.Remove(existingMarker);
+			MarkerControl.UpdateMarkerCount();
+		}
+
+		private void TasView_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			if (TasView.CurrentCell?.Column is not { Name: var columnName }) return;
+
+			if (e.Button == MouseButtons.Left)
+			{
+				if (!AxisEditingMode && columnName is FrameColumnName)
+				{
+					SetMarker(TasView.CurrentCell.RowIndex.Value);
+				}
+			}
+		}
+
+		private void TasView_PointedCellChanged(object sender, InputRoll.CellEventArgs e)
+		{
+			toolTip1.SetToolTip(TasView, null);
+
+			if (e.NewCell.RowIndex is null)
+			{
+				return;
+			}
+
+			if (!MouseButtonHeld)
+			{
+				return;
+			}
+
+			// skip rerecord counting on drawing entirely, mouse down is enough
+			// avoid introducing another global
+			bool wasCountingRerecords = CurrentTasMovie.IsCountingRerecords;
+			WasRecording = CurrentTasMovie.IsRecording() || WasRecording;
+
+			int startVal, endVal;
+			int frame = e.NewCell.RowIndex.Value;
+			if (e.OldCell.RowIndex < e.NewCell.RowIndex)
+			{
+				startVal = e.OldCell.RowIndex.Value;
+				endVal = e.NewCell.RowIndex.Value;
+				if (_patternPaint)
+				{
+					endVal--;
+				}
+			}
+			else
+			{
+				startVal = e.NewCell.RowIndex.Value;
+				endVal = e.OldCell.RowIndex ?? e.NewCell.RowIndex.Value;
+				if(_patternPaint)
+				{
+					endVal = _startRow;
+				}
+			}
+
+			if (_startCursorDrag)
+			{
+				GoToFrame(e.NewCell.RowIndex.Value);
+			}
+			else if (_startSelectionDrag)
+			{
+				for (var i = startVal; i <= endVal; i++)
+				{
+					if (!TasView.IsRowSelected(i))
+						TasView.SelectRow(i, _selectionDragState);
+				}
+
+				SetSplicer();
+				RefreshDialog();
+			}
+			else if (_rightClickFrame != -1)
+			{
+				FramePaint(frame, startVal, endVal);
+			}
+			// Left-click
+			else if (TasView.IsPaintDown && !string.IsNullOrEmpty(_startBoolDrawColumn))
+			{
+				BoolPaint(frame, startVal, endVal);
+			}
+			else if (TasView.IsPaintDown && !string.IsNullOrEmpty(_startAxisDrawColumn))
+			{
+				AxisPaint(frame, startVal, endVal);
+			}
+
+			CurrentTasMovie.IsCountingRerecords = wasCountingRerecords;
+
+			if (MouseButtonHeld)
+			{
+				TasView.MakeIndexVisible(TasView.CurrentCell.RowIndex.Value); // todo: limit scrolling speed
+				SetTasViewRowCount(); // refreshes
+			}
+		}
+
+		private void FramePaint(int frame, int startVal, int endVal)
+		{
+			CurrentTasMovie.SingleInvalidation(() => {
+				if (frame > CurrentTasMovie.InputLogLength - _rightClickInput.Length)
+				{
+					frame = CurrentTasMovie.InputLogLength - _rightClickInput.Length;
+				}
+
+				if (_rightClickShift)
+				{
+					if (_rightClickControl) // Insert
+					{
+						// If going backwards, delete!
+						bool shouldInsert = true;
+						if (startVal < _rightClickFrame)
+						{
+							// Cloning to a previous frame makes no sense.
+							startVal = _rightClickFrame - 1;
+						}
+
+						if (startVal < _rightClickLastFrame)
+						{
+							shouldInsert = false;
+						}
+
+						if (shouldInsert)
+						{
+							for (int i = startVal + 1; i <= endVal; i++)
+							{
+								CurrentTasMovie.InsertInput(i, _rightClickInput[(i - _rightClickFrame).Mod(_rightClickInput.Length)]);
+							}
+						}
+						else
+						{
+							CurrentTasMovie.RemoveFrames(startVal + 1, endVal + 1);
+						}
+
+						_rightClickLastFrame = frame;
+					}
+					else // Overwrite
+					{
+						for (int i = startVal; i <= endVal; i++)
+						{
+							CurrentTasMovie.SetFrame(i, _rightClickInput[(i - _rightClickFrame).Mod(_rightClickInput.Length)]);
+						}
+					}
+				}
+				else
+				{
+					if (_rightClickControl)
+					{
+						for (int i = 0; i < _rightClickInput.Length; i++) // Re-set initial range, just to verify it's still there.
+						{
+							CurrentTasMovie.SetFrame(_rightClickFrame + i, _rightClickInput[i]);
+						}
+
+						if (_rightClickOverInput != null) // Restore overwritten input from previous movement
+						{
+							for (int i = 0; i < _rightClickOverInput.Length; i++)
+							{
+								CurrentTasMovie.SetFrame(_rightClickLastFrame + i, _rightClickOverInput[i]);
+							}
+						}
+						else
+						{
+							_rightClickOverInput = new string[_rightClickInput.Length];
+						}
+
+						_rightClickLastFrame = frame; // Set new restore log
+						CurrentTasMovie.GetLogEntries().CopyTo(frame, _rightClickOverInput, 0, _rightClickOverInput.Length);
+
+						for (int i = 0; i < _rightClickInput.Length; i++) // Place copied input
+						{
+							CurrentTasMovie.SetFrame(frame + i, _rightClickInput[i]);
+						}
+					}
+					else if (_rightClickAlt)
+					{
+						int shiftBy = _rightClickFrame - frame;
+						string[] shiftInput = new string[Math.Abs(shiftBy)];
+						int shiftFrom = frame;
+						if (shiftBy < 0)
+						{
+							shiftFrom = _rightClickFrame + _rightClickInput.Length;
+						}
+
+						CurrentTasMovie.GetLogEntries().CopyTo(shiftFrom, shiftInput, 0, shiftInput.Length);
+						int shiftTo = shiftFrom + (_rightClickInput.Length * Math.Sign(shiftBy));
+						for (int i = 0; i < shiftInput.Length; i++)
+						{
+							CurrentTasMovie.SetFrame(shiftTo + i, shiftInput[i]);
+						}
+
+						for (int i = 0; i < _rightClickInput.Length; i++)
+						{
+							CurrentTasMovie.SetFrame(frame + i, _rightClickInput[i]);
+						}
+
+						_rightClickFrame = frame;
+					}
+				}
+
+				if (_rightClickAlt || _rightClickControl || _rightClickShift)
+				{
+					_suppressContextMenu = true;
+				}
+			});
+		}
+
+		private void BoolPaint(int frame, int startVal, int endVal)
+		{
+			CurrentTasMovie.SingleInvalidation(() => {
+				CurrentTasMovie.IsCountingRerecords = false;
+
+				for (int i = startVal; i <= endVal; i++) // Inclusive on both ends (drawing up or down)
+				{
+					bool setVal = _boolPaintState;
+
+					if (_patternPaint && _boolPaintState)
+					{
+						if (CurrentTasMovie[frame].Lagged.HasValue && CurrentTasMovie[frame].Lagged.Value)
+						{
+							setVal = CurrentTasMovie.BoolIsPressed(i - 1, _startBoolDrawColumn);
+						}
+						else
+						{
+							setVal = BoolPatterns[ControllerType.BoolButtons.IndexOf(_startBoolDrawColumn)].GetNextValue();
+						}
+					}
+
+					CurrentTasMovie.SetBoolState(i, _startBoolDrawColumn, setVal); // Notice it uses new row, old column, you can only paint across a single column
+				}
+			});
+		}
+
+		private void AxisPaint(int frame, int startVal, int endVal)
+		{
+			CurrentTasMovie.SingleInvalidation(() =>
+			{
+				CurrentTasMovie.IsCountingRerecords = false;
+
+				for (int i = startVal; i <= endVal; i++) // Inclusive on both ends (drawing up or down)
+				{
+					var setVal = _axisPaintState;
+					if (_patternPaint)
+					{
+						if (CurrentTasMovie[frame].Lagged.HasValue && CurrentTasMovie[frame].Lagged.Value)
+						{
+							setVal = CurrentTasMovie.GetAxisState(i - 1, _startAxisDrawColumn);
+						}
+						else
+						{
+							setVal = AxisPatterns[ControllerType.Axes.IndexOf(_startAxisDrawColumn)].GetNextValue();
+						}
+					}
+
+					CurrentTasMovie.SetAxisState(i, _startAxisDrawColumn, setVal); // Notice it uses new row, old column, you can only paint across a single column
+				}
+			});
+		}
+
+		private void TasView_MouseMove(object sender, MouseEventArgs e)
+		{
+			// For axis editing
+			if (_axisEditYPos == -1)
+			{
+				return;
+			}
+
+			int increment = (_axisEditYPos - e.Y) / 4;
+			AnalogChangeBy(increment);
+			_axisEditYPos -= increment * 4;
+		}
+
+		private void TasView_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			SetSplicer();
+		}
+
+		public void AnalogIncrementByOne()
+		{
+			AnalogChangeBy(1);
+		}
+
+		public void AnalogDecrementByOne()
+		{
+			AnalogChangeBy(-1);
+		}
+
+		public void AnalogIncrementByTen()
+		{
+			AnalogChangeBy(10);
+		}
+
+		public void AnalogDecrementByTen()
+		{
+			AnalogChangeBy(-10);
+		}
+
+		private void AnalogChangeBy(int change)
+		{
+			if (!AxisEditingMode) return;
+			if (change == 0) return; // prevent issues with user accidentally moving mouse by 1 pixel before typing
+
+			if (_didAxisType)
+			{
+				_didAxisType = false;
+				CurrentTasMovie.ChangeLog.EndBatch();
+			}
+
+			bool batch = CurrentTasMovie.ChangeLog.BeginNewBatch($"Axis change by {change}, frame {TasView.SelectedRows.First()}", true);
+			CurrentTasMovie.SingleInvalidation(() =>
+			{
+				foreach (int frame in TasView.SelectedRows)
+				{
+					int value = CurrentTasMovie.GetAxisState(frame, AxisEditColumn) + change;
+					value = value.ConstrainWithin(ControllerType.Axes[AxisEditColumn].Range);
+					CurrentTasMovie.SetAxisState(frame, AxisEditColumn, value);
+					_axisTypedValue = value.ToString(); // Typing with multiple rows selected has undefined behavior if the values do not all match.
+				}
+			});
+			if (batch) CurrentTasMovie.ChangeLog.EndBatch();
+
+			RefreshDialog();
+		}
+
+		public void AnalogMax()
+		{
+			if (!AxisEditingMode) return;
+
+			int value = ControllerType.Axes[AxisEditColumn].Max;
+			foreach (int frame in TasView.SelectedRows)
+			{
+				CurrentTasMovie.SetAxisState(frame, AxisEditColumn, value);
+			}
+			_axisTypedValue = value.ToString();
+			RefreshDialog();
+		}
+
+		public void AnalogMin()
+		{
+			if (!AxisEditingMode) return;
+
+			int value = ControllerType.Axes[AxisEditColumn].Min;
+			foreach (int frame in TasView.SelectedRows)
+			{
+				CurrentTasMovie.SetAxisState(frame, AxisEditColumn, value);
+			}
+			_axisTypedValue = value.ToString();
+			RefreshDialog();
+		}
+
+		public void EditAnalogProgrammatically(KeyEventArgs e)
+		{
+			if (!AxisEditingMode)
+			{
+				return;
+			}
+
+			string prevTyped = _axisTypedValue;
+			AxisSpec axis = ControllerType.Axes[AxisEditColumn];
+
+			int charToType = -1;
+			if (e.KeyCode is >= Keys.D0 and <= Keys.D9)
+			{
+				charToType = e.KeyCode - Keys.D0;
+			}
+			else if (e.KeyCode is >= Keys.NumPad0 and <= Keys.NumPad9)
+			{
+				charToType = e.KeyCode - Keys.NumPad0;
+			}
+
+			if (charToType != -1)
+			{
+				if ((_axisTypedValue.StartsWith('-') && _axisTypedValue.Length < axis.Min.ToString().Length)
+					|| (!_axisTypedValue.StartsWith('-') && _axisTypedValue.Length < axis.Max.ToString().Length))
+				{
+					_axisTypedValue += charToType;
+				}
+			}
+			else if (e.KeyCode is Keys.OemMinus or Keys.Subtract)
+			{
+				if (axis.Min < 0)
+				{
+					_axisTypedValue = _axisTypedValue.StartsWith('-')
+						? _axisTypedValue.Substring(startIndex: 1)
+						: $"-{_axisTypedValue}";
+				}
+			}
+			else if (e.KeyCode == Keys.Back)
+			{
+				if (!_didAxisType)
+				{
+					_axisTypedValue = CurrentTasMovie.GetAxisState(TasView.SelectedRows.First(), AxisEditColumn).ToString();
+					_didAxisType = true;
+				}
+				if (_axisTypedValue.Length != 0)
+				{
+					_axisTypedValue = _axisTypedValue.Substring(startIndex: 0, length: _axisTypedValue.Length - 1); // drop last char
+				}
+			}
+			else if (e.KeyCode == Keys.Enter)
+			{
+				AxisEditColumn = null;
+			}
+			else if (e.KeyCode == Keys.Escape)
+			{
+				AxisEditColumn = null;
+				CurrentTasMovie.ChangeLog.Undo(_axisRestoreId);
+			}
+
+			if (_axisTypedValue != prevTyped)
+			{
+				CurrentTasMovie.ChangeLog.BeginNewBatch($"Axis edit: {TasView.SelectedRows.First()}", true);
+				_didAxisType = true;
+
+				int value;
+				if (_axisTypedValue.Length is 0)
+				{
+					value = axis.Neutral;
+				}
+				else
+				{
+					if (int.TryParse(_axisTypedValue, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out value)) // String "-" can't be parsed.
+					{
+						value = value.ConstrainWithin(axis.Range);
+					}
+					else
+					{
+						value = 0;
+					}
+				}
+
+				CurrentTasMovie.SingleInvalidation(() =>
+				{
+					foreach (int row in TasView.SelectedRows)
+					{
+						CurrentTasMovie.SetAxisState(row, AxisEditColumn, value);
+					}
+				});
+			}
+
+			// We (probably) need a refresh if the typed value changed or we've exited axis editing mode.
+			if (prevTyped != _axisTypedValue || !AxisEditingMode)
+			{
+				RefreshDialog();
+			}
+		}
+
+		private void TasView_KeyDown(object sender, KeyEventArgs e)
+		{
+			// taseditor uses Ctrl for selection and Shift for frame cursor
+			if (e.IsShift(Keys.Home))
+			{
+				GoToFrame(0);
+			}
+			else if (e.IsShift(Keys.End))
+			{
+				GoToFrame(CurrentTasMovie.InputLogLength-1);
+			}
+
+			if (AxisEditingMode)
+			{
+				EditAnalogProgrammatically(e);
+			}
+		}
+	}
+}

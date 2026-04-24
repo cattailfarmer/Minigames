@@ -1,0 +1,8 @@
+{
+  "tool": "soppyvfx",
+  "preset": "sonar_ping",
+  "seed": 7,
+  "width": 512,
+  "height": 512,
+  "schema": "schema/SOPPyVFX.md"
+}

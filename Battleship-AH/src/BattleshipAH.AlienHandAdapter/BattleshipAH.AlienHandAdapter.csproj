@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BattleshipAH.Core\BattleshipAH.Core.csproj" />
+    <ProjectReference Include="..\..\..\AlienHand\src\AlienHand.Contracts\AlienHand.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

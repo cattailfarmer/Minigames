@@ -1,0 +1,10 @@
+{
+  "tool": "soppyvfx",
+  "preset": "sonar_ping",
+  "seed": 904,
+  "width": 512,
+  "height": 512,
+  "role": "signature",
+  "family": "battleship",
+  "schema": "schema/SOPPyVFX.md"
+}

@@ -1,0 +1,10 @@
+{
+  "tool": "soppyvfx",
+  "preset": "victory_frame",
+  "seed": 908,
+  "width": 768,
+  "height": 432,
+  "role": "stinger",
+  "family": "battleship",
+  "schema": "schema/SOPPyVFX.md"
+}

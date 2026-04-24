@@ -10,6 +10,8 @@ The first concrete solution target is:
 - a LAN PC display endpoint
 - a station assignment and pairing flow
 - a game integration contract sufficient for Battleship-AH
+- a Windows-first .NET 10 implementation skeleton
+- a reusable AlienHand-owned media toolchain for asset generation and review
 
 ## Initial Deliverables
 
@@ -18,14 +20,14 @@ The first concrete solution target is:
 3. Build a host application shell.
 4. Build a slim LAN PC endpoint.
 5. Build Battleship-AH against the platform contract.
+6. Centralize media tooling under AlienHand so multiple games can consume one pipeline.
 
 ## Known Open Decisions
 
-- implementation language and UI stack
-- transport protocol shape
+- final desktop UI stack
 - raw multi-device support timing
 - whether remote endpoints are render-model driven or scene-command driven
 
 ## Immediate Next Step
 
-Write the first technical architecture for the host and endpoint applications, then choose a stack that is strong for Windows-first local and LAN multiplayer development.
+Implement the first technical architecture for the host and endpoint applications, validate the shared contract boundary with Battleship-AH, and then choose the first desktop UI layer on top of the working core.

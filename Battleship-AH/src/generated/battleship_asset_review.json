@@ -1,0 +1,738 @@
+{
+  "summary": {
+    "audio": {
+      "asset_count": 15,
+      "mix_density": "controlled",
+      "event_readiness": "good"
+    },
+    "vfx": {
+      "asset_count": 9,
+      "pack_density": "light",
+      "palette_discipline": "tight"
+    }
+  },
+  "audio_report": {
+    "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack",
+    "asset_count": 15,
+    "average_peak": 0.72721,
+    "average_rms": 0.118699,
+    "average_transient_density": 10.866667,
+    "assets": [
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\defeat_stinger.wav",
+        "metrics": {
+          "duration_seconds": 0.9499,
+          "sample_rate": 44100,
+          "channels": 1,
+          "peak": 0.69986,
+          "rms": 0.124254,
+          "zero_crossing_rate": 0.000668,
+          "transient_density": 0.0,
+          "spectral_centroid_hz": 1139.66
+        },
+        "metadata": {
+          "tool": "soppywave",
+          "preset": "defeat_stinger",
+          "seed": 712,
+          "sample_rate": 44100,
+          "duration_seconds": 0.9499,
+          "waveform": "square",
+          "frequency": 159.9996,
+          "role": "stinger",
+          "family": "battleship",
+          "schema": "schema/SOPPyWave.md"
+        },
+        "judgment": {
+          "clarity": "clear",
+          "fatigue_risk": "low",
+          "masking_risk": "bounded",
+          "notes": []
+        },
+        "uncertainty": []
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\fire_command.wav",
+        "metrics": {
+          "duration_seconds": 0.2553,
+          "sample_rate": 44100,
+          "channels": 1,
+          "peak": 0.81134,
+          "rms": 0.115457,
+          "zero_crossing_rate": 0.023097,
+          "transient_density": 16.0,
+          "spectral_centroid_hz": 1592.43
+        },
+        "metadata": {
+          "tool": "soppywave",
+          "preset": "fire_command",
+          "seed": 707,
+          "sample_rate": 44100,
+          "duration_seconds": 0.2553,
+          "waveform": "impact",
+          "frequency": 290.1195,
+          "role": "event",
+          "family": "battleship",
+          "schema": "schema/SOPPyWave.md"
+        },
+        "judgment": {
+          "clarity": "clear",
+          "fatigue_risk": "low",
+          "masking_risk": "bounded",
+          "notes": []
+        },
+        "uncertainty": []
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\handoff_curtain.wav",
+        "metrics": {
+          "duration_seconds": 0.5308,
+          "sample_rate": 44100,
+          "channels": 1,
+          "peak": 0.757843,
+          "rms": 0.076706,
+          "zero_crossing_rate": 0.064254,
+          "transient_density": 20.0,
+          "spectral_centroid_hz": 2565.92
+        },
+        "metadata": {
+          "tool": "soppywave",
+          "preset": "handoff_curtain",
+          "seed": 706,
+          "sample_rate": 44100,
+          "duration_seconds": 0.5308,
+          "waveform": "noise",
+          "frequency": 398.8389,
+          "role": "transition",
+          "family": "battleship",
+          "schema": "schema/SOPPyWave.md"
+        },
+        "judgment": {
+          "clarity": "clear",
+          "fatigue_risk": "low",
+          "masking_risk": "bounded",
+          "notes": []
+        },
+        "uncertainty": []
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\hit_confirm.wav",
+        "metrics": {
+          "duration_seconds": 0.2532,
+          "sample_rate": 44100,
+          "channels": 1,
+          "peak": 0.806793,
+          "rms": 0.10212,
+          "zero_crossing_rate": 0.01863,
+          "transient_density": 13.0,
+          "spectral_centroid_hz": 1688.44
+        },
+        "metadata": {
+          "tool": "soppywave",
+          "preset": "hit_confirm",
+          "seed": 708,
+          "sample_rate": 44100,
+          "duration_seconds": 0.2532,
+          "waveform": "impact",
+          "frequency": 661.7329,
+          "role": "event",
+          "family": "battleship",
+          "schema": "schema/SOPPyWave.md"
+        },
+        "judgment": {
+          "clarity": "clear",
+          "fatigue_risk": "low",
+          "masking_risk": "bounded",
+          "notes": []
+        },
+        "uncertainty": []
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\miss_confirm.wav",
+        "metrics": {
+          "duration_seconds": 0.2697,
+          "sample_rate": 44100,
+          "channels": 1,
+          "peak": 0.722626,
+          "rms": 0.087241,
+          "zero_crossing_rate": 0.081063,
+          "transient_density": 34.0,
+          "spectral_centroid_hz": 2503.71
+        },
+        "metadata": {
+          "tool": "soppywave",
+          "preset": "miss_confirm",
+          "seed": 709,
+          "sample_rate": 44100,
+          "duration_seconds": 0.2697,
+          "waveform": "noise",
+          "frequency": 248.1209,
+          "role": "event",
+          "family": "battleship",
+          "schema": "schema/SOPPyWave.md"
+        },
+        "judgment": {
+          "clarity": "clear",
+          "fatigue_risk": "low",
+          "masking_risk": "bounded",
+          "notes": []
+        },
+        "uncertainty": []
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\pairing_accept.wav",
+        "metrics": {
+          "duration_seconds": 0.1711,
+          "sample_rate": 44100,
+          "channels": 1,
+          "peak": 0.695374,
+          "rms": 0.129418,
+          "zero_crossing_rate": 0.009279,
+          "transient_density": 5.0,
+          "spectral_centroid_hz": 1190.18
+        },
+        "metadata": {
+          "tool": "soppywave",
+          "preset": "pairing_accept",
+          "seed": 700,
+          "sample_rate": 44100,
+          "duration_seconds": 0.1711,
+          "waveform": "sine",
+          "frequency": 997.5971,
+          "role": "ui",
+          "family": "battleship",
+          "schema": "schema/SOPPyWave.md"
+        },
+        "judgment": {
+          "clarity": "clear",
+          "fatigue_risk": "low",
+          "masking_risk": "bounded",
+          "notes": []
+        },
+        "uncertainty": []
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\pairing_reject.wav",
+        "metrics": {
+          "duration_seconds": 0.24,
+          "sample_rate": 44100,
+          "channels": 1,
+          "peak": 0.699768,
+          "rms": 0.18901,
+          "zero_crossing_rate": 0.002457,
+          "transient_density": 0.0,
+          "spectral_centroid_hz": 1220.37
+        },
+        "metadata": {
+          "tool": "soppywave",
+          "preset": "pairing_reject",
+          "seed": 701,
+          "sample_rate": 44100,
+          "duration_seconds": 0.24,
+          "waveform": "square",
+          "frequency": 241.1652,
+          "role": "ui_warning",
+          "family": "battleship",
+          "schema": "schema/SOPPyWave.md"
+        },
+        "judgment": {
+          "clarity": "clear",
+          "fatigue_risk": "low",
+          "masking_risk": "bounded",
+          "notes": [
+            "Transient density is low for event-driven naval game feedback."
+          ]
+        },
+        "uncertainty": []
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\placement_confirm.wav",
+        "metrics": {
+          "duration_seconds": 0.1512,
+          "sample_rate": 44100,
+          "channels": 1,
+          "peak": 0.686432,
+          "rms": 0.127235,
+          "zero_crossing_rate": 0.005701,
+          "transient_density": 0.0,
+          "spectral_centroid_hz": 788.78
+        },
+        "metadata": {
+          "tool": "soppywave",
+          "preset": "placement_confirm",
+          "seed": 703,
+          "sample_rate": 44100,
+          "duration_seconds": 0.1512,
+          "waveform": "sine",
+          "frequency": 617.7292,
+          "role": "ui",
+          "family": "battleship",
+          "schema": "schema/SOPPyWave.md"
+        },
+        "judgment": {
+          "clarity": "clear",
+          "fatigue_risk": "low",
+          "masking_risk": "bounded",
+          "notes": [
+            "Transient density is low for event-driven naval game feedback."
+          ]
+        },
+        "uncertainty": []
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\placement_invalid.wav",
+        "metrics": {
+          "duration_seconds": 0.1959,
+          "sample_rate": 44100,
+          "channels": 1,
+          "peak": 0.699799,
+          "rms": 0.200457,
+          "zero_crossing_rate": 0.002315,
+          "transient_density": 0.0,
+          "spectral_centroid_hz": 1205.49
+        },
+        "metadata": {
+          "tool": "soppywave",
+          "preset": "placement_invalid",
+          "seed": 704,
+          "sample_rate": 44100,
+          "duration_seconds": 0.1959,
+          "waveform": "square",
+          "frequency": 205.3541,
+          "role": "ui_warning",
+          "family": "battleship",
+          "schema": "schema/SOPPyWave.md"
+        },
+        "judgment": {
+          "clarity": "clear",
+          "fatigue_risk": "low",
+          "masking_risk": "bounded",
+          "notes": [
+            "Transient density is low for event-driven naval game feedback."
+          ]
+        },
+        "uncertainty": []
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\ready_confirm.wav",
+        "metrics": {
+          "duration_seconds": 0.2094,
+          "sample_rate": 44100,
+          "channels": 1,
+          "peak": 0.694366,
+          "rms": 0.134617,
+          "zero_crossing_rate": 0.008231,
+          "transient_density": 9.0,
+          "spectral_centroid_hz": 1011.92
+        },
+        "metadata": {
+          "tool": "soppywave",
+          "preset": "ready_confirm",
+          "seed": 702,
+          "sample_rate": 44100,
+          "duration_seconds": 0.2094,
+          "waveform": "sine",
+          "frequency": 813.1162,
+          "role": "ui",
+          "family": "battleship",
+          "schema": "schema/SOPPyWave.md"
+        },
+        "judgment": {
+          "clarity": "clear",
+          "fatigue_risk": "low",
+          "masking_risk": "bounded",
+          "notes": []
+        },
+        "uncertainty": []
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\sink_confirm.wav",
+        "metrics": {
+          "duration_seconds": 0.8274,
+          "sample_rate": 44100,
+          "channels": 1,
+          "peak": 0.823975,
+          "rms": 0.078153,
+          "zero_crossing_rate": 0.010689,
+          "transient_density": 13.0,
+          "spectral_centroid_hz": 1850.19
+        },
+        "metadata": {
+          "tool": "soppywave",
+          "preset": "sink_confirm",
+          "seed": 710,
+          "sample_rate": 44100,
+          "duration_seconds": 0.8274,
+          "waveform": "impact",
+          "frequency": 171.6908,
+          "role": "stinger",
+          "family": "battleship",
+          "schema": "schema/SOPPyWave.md"
+        },
+        "judgment": {
+          "clarity": "clear",
+          "fatigue_risk": "low",
+          "masking_risk": "bounded",
+          "notes": []
+        },
+        "uncertainty": []
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\sonar_ping.wav",
+        "metrics": {
+          "duration_seconds": 0.8689,
+          "sample_rate": 44100,
+          "channels": 1,
+          "peak": 0.698181,
+          "rms": 0.108988,
+          "zero_crossing_rate": 0.005689,
+          "transient_density": 36.0,
+          "spectral_centroid_hz": 1127.03
+        },
+        "metadata": {
+          "tool": "soppywave",
+          "preset": "sonar_ping",
+          "seed": 713,
+          "sample_rate": 44100,
+          "duration_seconds": 0.8689,
+          "waveform": "sine",
+          "frequency": 866.4603,
+          "role": "signature",
+          "family": "battleship",
+          "schema": "schema/SOPPyWave.md"
+        },
+        "judgment": {
+          "clarity": "clear",
+          "fatigue_risk": "low",
+          "masking_risk": "bounded",
+          "notes": []
+        },
+        "uncertainty": []
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\turn_start.wav",
+        "metrics": {
+          "duration_seconds": 0.1658,
+          "sample_rate": 44100,
+          "channels": 1,
+          "peak": 0.692688,
+          "rms": 0.142171,
+          "zero_crossing_rate": 0.006019,
+          "transient_density": 0.0,
+          "spectral_centroid_hz": 721.06
+        },
+        "metadata": {
+          "tool": "soppywave",
+          "preset": "turn_start",
+          "seed": 705,
+          "sample_rate": 44100,
+          "duration_seconds": 0.1658,
+          "waveform": "sine",
+          "frequency": 543.7616,
+          "role": "transition",
+          "family": "battleship",
+          "schema": "schema/SOPPyWave.md"
+        },
+        "judgment": {
+          "clarity": "clear",
+          "fatigue_risk": "low",
+          "masking_risk": "bounded",
+          "notes": [
+            "Transient density is low for event-driven naval game feedback."
+          ]
+        },
+        "uncertainty": []
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\victory_stinger.wav",
+        "metrics": {
+          "duration_seconds": 0.8846,
+          "sample_rate": 44100,
+          "channels": 1,
+          "peak": 0.697754,
+          "rms": 0.088361,
+          "zero_crossing_rate": 0.004358,
+          "transient_density": 2.0,
+          "spectral_centroid_hz": 1318.97
+        },
+        "metadata": {
+          "tool": "soppywave",
+          "preset": "victory_stinger",
+          "seed": 711,
+          "sample_rate": 44100,
+          "duration_seconds": 0.8846,
+          "waveform": "sine",
+          "frequency": 1003.6381,
+          "role": "stinger",
+          "family": "battleship",
+          "schema": "schema/SOPPyWave.md"
+        },
+        "judgment": {
+          "clarity": "clear",
+          "fatigue_risk": "low",
+          "masking_risk": "bounded",
+          "notes": []
+        },
+        "uncertainty": []
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\water_splash.wav",
+        "metrics": {
+          "duration_seconds": 0.745,
+          "sample_rate": 44100,
+          "channels": 1,
+          "peak": 0.721344,
+          "rms": 0.076301,
+          "zero_crossing_rate": 0.063312,
+          "transient_density": 15.0,
+          "spectral_centroid_hz": 2574.35
+        },
+        "metadata": {
+          "tool": "soppywave",
+          "preset": "water_splash",
+          "seed": 714,
+          "sample_rate": 44100,
+          "duration_seconds": 0.745,
+          "waveform": "noise",
+          "frequency": 228.4214,
+          "role": "impact_tail",
+          "family": "battleship",
+          "schema": "schema/SOPPyWave.md"
+        },
+        "judgment": {
+          "clarity": "clear",
+          "fatigue_risk": "low",
+          "masking_risk": "bounded",
+          "notes": []
+        },
+        "uncertainty": []
+      }
+    ],
+    "judgment": {
+      "mix_density": "controlled",
+      "event_readiness": "good"
+    }
+  },
+  "vfx_report": {
+    "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack",
+    "asset_count": 9,
+    "average_element_count": 8.666666666666666,
+    "average_unique_color_count": 2.888888888888889,
+    "assets": [
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\board_grid.svg",
+        "metrics": {
+          "element_count": 20,
+          "unique_color_count": 2,
+          "stroke_fill_mentions": 20
+        },
+        "metadata": {
+          "tool": "soppyvfx",
+          "preset": "board_grid",
+          "seed": 900,
+          "width": 896,
+          "height": 896,
+          "role": "board",
+          "family": "battleship",
+          "schema": "schema/SOPPyVFX.md"
+        },
+        "judgment": {
+          "clutter_risk": "bounded",
+          "palette_density": "controlled",
+          "structure_risk": "acceptable"
+        }
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\handoff_glow.svg",
+        "metrics": {
+          "element_count": 4,
+          "unique_color_count": 4,
+          "stroke_fill_mentions": 5
+        },
+        "metadata": {
+          "tool": "soppyvfx",
+          "preset": "handoff_glow",
+          "seed": 907,
+          "width": 640,
+          "height": 360,
+          "role": "transition",
+          "family": "battleship",
+          "schema": "schema/SOPPyVFX.md"
+        },
+        "judgment": {
+          "clutter_risk": "bounded",
+          "palette_density": "controlled",
+          "structure_risk": "acceptable"
+        }
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\hit_marker.svg",
+        "metrics": {
+          "element_count": 4,
+          "unique_color_count": 3,
+          "stroke_fill_mentions": 4
+        },
+        "metadata": {
+          "tool": "soppyvfx",
+          "preset": "hit_marker",
+          "seed": 902,
+          "width": 384,
+          "height": 384,
+          "role": "event",
+          "family": "battleship",
+          "schema": "schema/SOPPyVFX.md"
+        },
+        "judgment": {
+          "clutter_risk": "bounded",
+          "palette_density": "controlled",
+          "structure_risk": "acceptable"
+        }
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\impact_flash.svg",
+        "metrics": {
+          "element_count": 14,
+          "unique_color_count": 3,
+          "stroke_fill_mentions": 14
+        },
+        "metadata": {
+          "tool": "soppyvfx",
+          "preset": "impact_flash",
+          "seed": 906,
+          "width": 512,
+          "height": 512,
+          "role": "event",
+          "family": "battleship",
+          "schema": "schema/SOPPyVFX.md"
+        },
+        "judgment": {
+          "clutter_risk": "bounded",
+          "palette_density": "controlled",
+          "structure_risk": "acceptable"
+        }
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\miss_marker.svg",
+        "metrics": {
+          "element_count": 3,
+          "unique_color_count": 3,
+          "stroke_fill_mentions": 3
+        },
+        "metadata": {
+          "tool": "soppyvfx",
+          "preset": "miss_marker",
+          "seed": 903,
+          "width": 384,
+          "height": 384,
+          "role": "event",
+          "family": "battleship",
+          "schema": "schema/SOPPyVFX.md"
+        },
+        "judgment": {
+          "clutter_risk": "bounded",
+          "palette_density": "controlled",
+          "structure_risk": "acceptable"
+        }
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\ship_outline.svg",
+        "metrics": {
+          "element_count": 4,
+          "unique_color_count": 2,
+          "stroke_fill_mentions": 4
+        },
+        "metadata": {
+          "tool": "soppyvfx",
+          "preset": "ship_outline",
+          "seed": 901,
+          "width": 896,
+          "height": 192,
+          "role": "board",
+          "family": "battleship",
+          "schema": "schema/SOPPyVFX.md"
+        },
+        "judgment": {
+          "clutter_risk": "bounded",
+          "palette_density": "controlled",
+          "structure_risk": "thin"
+        }
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\sonar_ping.svg",
+        "metrics": {
+          "element_count": 5,
+          "unique_color_count": 2,
+          "stroke_fill_mentions": 5
+        },
+        "metadata": {
+          "tool": "soppyvfx",
+          "preset": "sonar_ping",
+          "seed": 904,
+          "width": 512,
+          "height": 512,
+          "role": "signature",
+          "family": "battleship",
+          "schema": "schema/SOPPyVFX.md"
+        },
+        "judgment": {
+          "clutter_risk": "bounded",
+          "palette_density": "controlled",
+          "structure_risk": "acceptable"
+        }
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\victory_frame.svg",
+        "metrics": {
+          "element_count": 4,
+          "unique_color_count": 4,
+          "stroke_fill_mentions": 5
+        },
+        "metadata": {
+          "tool": "soppyvfx",
+          "preset": "victory_frame",
+          "seed": 908,
+          "width": 768,
+          "height": 432,
+          "role": "stinger",
+          "family": "battleship",
+          "schema": "schema/SOPPyVFX.md"
+        },
+        "judgment": {
+          "clutter_risk": "bounded",
+          "palette_density": "controlled",
+          "structure_risk": "acceptable"
+        }
+      },
+      {
+        "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\water_splash.svg",
+        "metrics": {
+          "element_count": 20,
+          "unique_color_count": 3,
+          "stroke_fill_mentions": 20
+        },
+        "metadata": {
+          "tool": "soppyvfx",
+          "preset": "water_splash",
+          "seed": 905,
+          "width": 512,
+          "height": 512,
+          "role": "impact_tail",
+          "family": "battleship",
+          "schema": "schema/SOPPyVFX.md"
+        },
+        "judgment": {
+          "clutter_risk": "bounded",
+          "palette_density": "controlled",
+          "structure_risk": "acceptable"
+        }
+      }
+    ],
+    "judgment": {
+      "pack_density": "light",
+      "palette_discipline": "tight"
+    }
+  },
+  "findings": {
+    "audio": [],
+    "vfx": []
+  }
+}

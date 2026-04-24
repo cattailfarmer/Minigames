@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Battleship-AH Asset Gallery</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #07131c;
+      color: #e7f3fb;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+    h1, h2 {
+      margin-bottom: 8px;
+    }
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 20px 0 32px;
+    }
+    .panel {
+      border: 1px solid #2a4a59;
+      padding: 16px;
+      background: #0c1d28;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      border: 1px solid #224050;
+      background: #0a1821;
+      padding: 14px;
+    }
+    .card-wide {
+      grid-column: span 2;
+    }
+    .card img {
+      width: 100%;
+      height: auto;
+      background: #04111c;
+      border: 1px solid #19303d;
+    }
+    .card audio {
+      width: 100%;
+      margin: 8px 0;
+    }
+    .meta {
+      color: #9ab4c3;
+      font-size: 0.92rem;
+    }
+    a {
+      color: #8ef7ff;
+    }
+    @media (max-width: 700px) {
+      .card-wide {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Battleship-AH Asset Gallery</h1>
+    <p class="meta">Generated from SOPPyWave and SOPPyVFX manifests with review summaries.</p>
+
+    <section class="summary">
+      <div class="panel">
+        <strong>Audio</strong>
+        <div>15 assets</div>
+        <div>mix density: controlled</div>
+        <div>event readiness: good</div>
+      </div>
+      <div class="panel">
+        <strong>VFX</strong>
+        <div>9 assets</div>
+        <div>pack density: light</div>
+        <div>palette discipline: tight</div>
+      </div>
+      <div class="panel">
+        <strong>Reports</strong>
+        <div><a href="audio/battleship-pack/battleship_audio_pack.analysis.json">Audio analysis JSON</a></div>
+        <div><a href="vfx/battleship-pack/battleship_vfx_pack.analysis.json">VFX analysis JSON</a></div>
+        <div><a href="battleship_asset_review.md">Review markdown</a></div>
+      </div>
+    </section>
+
+    <h2>Audio Pack</h2>
+    <section class="grid">
+      
+        <article class="card">
+          <h3>pairing_accept</h3>
+          <p class="meta">role: ui</p>
+          <audio controls src="audio/battleship-pack/pairing_accept.wav"></audio>
+          <p class="meta">clarity: clear | fatigue: low</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>pairing_reject</h3>
+          <p class="meta">role: ui_warning</p>
+          <audio controls src="audio/battleship-pack/pairing_reject.wav"></audio>
+          <p class="meta">clarity: clear | fatigue: low</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>ready_confirm</h3>
+          <p class="meta">role: ui</p>
+          <audio controls src="audio/battleship-pack/ready_confirm.wav"></audio>
+          <p class="meta">clarity: clear | fatigue: low</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>placement_confirm</h3>
+          <p class="meta">role: ui</p>
+          <audio controls src="audio/battleship-pack/placement_confirm.wav"></audio>
+          <p class="meta">clarity: clear | fatigue: low</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>placement_invalid</h3>
+          <p class="meta">role: ui_warning</p>
+          <audio controls src="audio/battleship-pack/placement_invalid.wav"></audio>
+          <p class="meta">clarity: clear | fatigue: low</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>turn_start</h3>
+          <p class="meta">role: transition</p>
+          <audio controls src="audio/battleship-pack/turn_start.wav"></audio>
+          <p class="meta">clarity: clear | fatigue: low</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>handoff_curtain</h3>
+          <p class="meta">role: transition</p>
+          <audio controls src="audio/battleship-pack/handoff_curtain.wav"></audio>
+          <p class="meta">clarity: clear | fatigue: low</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>fire_command</h3>
+          <p class="meta">role: event</p>
+          <audio controls src="audio/battleship-pack/fire_command.wav"></audio>
+          <p class="meta">clarity: clear | fatigue: low</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>hit_confirm</h3>
+          <p class="meta">role: event</p>
+          <audio controls src="audio/battleship-pack/hit_confirm.wav"></audio>
+          <p class="meta">clarity: clear | fatigue: low</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>miss_confirm</h3>
+          <p class="meta">role: event</p>
+          <audio controls src="audio/battleship-pack/miss_confirm.wav"></audio>
+          <p class="meta">clarity: clear | fatigue: low</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>sink_confirm</h3>
+          <p class="meta">role: stinger</p>
+          <audio controls src="audio/battleship-pack/sink_confirm.wav"></audio>
+          <p class="meta">clarity: clear | fatigue: low</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>victory_stinger</h3>
+          <p class="meta">role: stinger</p>
+          <audio controls src="audio/battleship-pack/victory_stinger.wav"></audio>
+          <p class="meta">clarity: clear | fatigue: low</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>defeat_stinger</h3>
+          <p class="meta">role: stinger</p>
+          <audio controls src="audio/battleship-pack/defeat_stinger.wav"></audio>
+          <p class="meta">clarity: clear | fatigue: low</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>sonar_ping</h3>
+          <p class="meta">role: signature</p>
+          <audio controls src="audio/battleship-pack/sonar_ping.wav"></audio>
+          <p class="meta">clarity: clear | fatigue: low</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>water_splash</h3>
+          <p class="meta">role: impact_tail</p>
+          <audio controls src="audio/battleship-pack/water_splash.wav"></audio>
+          <p class="meta">clarity: clear | fatigue: low</p>
+        </article>
+        
+    </section>
+
+    <h2>VFX Pack</h2>
+    <section class="grid">
+      
+        <article class="card card-wide">
+          <h3>board_grid</h3>
+          <p class="meta">role: board | size: 896x896</p>
+          <img src="vfx/battleship-pack/board_grid.svg" alt="board_grid" />
+          <p class="meta">clutter: bounded | structure: acceptable</p>
+        </article>
+        
+
+        <article class="card card-wide">
+          <h3>ship_outline</h3>
+          <p class="meta">role: board | size: 896x192</p>
+          <img src="vfx/battleship-pack/ship_outline.svg" alt="ship_outline" />
+          <p class="meta">clutter: bounded | structure: thin</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>hit_marker</h3>
+          <p class="meta">role: event | size: 384x384</p>
+          <img src="vfx/battleship-pack/hit_marker.svg" alt="hit_marker" />
+          <p class="meta">clutter: bounded | structure: acceptable</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>miss_marker</h3>
+          <p class="meta">role: event | size: 384x384</p>
+          <img src="vfx/battleship-pack/miss_marker.svg" alt="miss_marker" />
+          <p class="meta">clutter: bounded | structure: acceptable</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>sonar_ping</h3>
+          <p class="meta">role: signature | size: 512x512</p>
+          <img src="vfx/battleship-pack/sonar_ping.svg" alt="sonar_ping" />
+          <p class="meta">clutter: bounded | structure: acceptable</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>water_splash</h3>
+          <p class="meta">role: impact_tail | size: 512x512</p>
+          <img src="vfx/battleship-pack/water_splash.svg" alt="water_splash" />
+          <p class="meta">clutter: bounded | structure: acceptable</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>impact_flash</h3>
+          <p class="meta">role: event | size: 512x512</p>
+          <img src="vfx/battleship-pack/impact_flash.svg" alt="impact_flash" />
+          <p class="meta">clutter: bounded | structure: acceptable</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>handoff_glow</h3>
+          <p class="meta">role: transition | size: 640x360</p>
+          <img src="vfx/battleship-pack/handoff_glow.svg" alt="handoff_glow" />
+          <p class="meta">clutter: bounded | structure: acceptable</p>
+        </article>
+        
+
+        <article class="card">
+          <h3>victory_frame</h3>
+          <p class="meta">role: stinger | size: 768x432</p>
+          <img src="vfx/battleship-pack/victory_frame.svg" alt="victory_frame" />
+          <p class="meta">clutter: bounded | structure: acceptable</p>
+        </article>
+        
+    </section>
+  </main>
+</body>
+</html>

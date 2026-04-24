@@ -1,0 +1,20 @@
+{
+  "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\sonar_ping.svg",
+  "metrics": {
+    "element_count": 5,
+    "unique_color_count": 2,
+    "stroke_fill_mentions": 5
+  },
+  "metadata": {
+    "tool": "soppyvfx",
+    "preset": "sonar_ping",
+    "seed": 7,
+    "width": 512,
+    "height": 512,
+    "schema": "schema/SOPPyVFX.md"
+  },
+  "judgment": {
+    "clutter_risk": "bounded",
+    "palette_density": "controlled"
+  }
+}

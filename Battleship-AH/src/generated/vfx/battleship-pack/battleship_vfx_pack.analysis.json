@@ -1,0 +1,219 @@
+{
+  "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack",
+  "asset_count": 9,
+  "average_element_count": 8.666666666666666,
+  "average_unique_color_count": 2.888888888888889,
+  "assets": [
+    {
+      "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\board_grid.svg",
+      "metrics": {
+        "element_count": 20,
+        "unique_color_count": 2,
+        "stroke_fill_mentions": 20
+      },
+      "metadata": {
+        "tool": "soppyvfx",
+        "preset": "board_grid",
+        "seed": 900,
+        "width": 896,
+        "height": 896,
+        "role": "board",
+        "family": "battleship",
+        "schema": "schema/SOPPyVFX.md"
+      },
+      "judgment": {
+        "clutter_risk": "bounded",
+        "palette_density": "controlled",
+        "structure_risk": "acceptable"
+      }
+    },
+    {
+      "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\handoff_glow.svg",
+      "metrics": {
+        "element_count": 4,
+        "unique_color_count": 4,
+        "stroke_fill_mentions": 5
+      },
+      "metadata": {
+        "tool": "soppyvfx",
+        "preset": "handoff_glow",
+        "seed": 907,
+        "width": 640,
+        "height": 360,
+        "role": "transition",
+        "family": "battleship",
+        "schema": "schema/SOPPyVFX.md"
+      },
+      "judgment": {
+        "clutter_risk": "bounded",
+        "palette_density": "controlled",
+        "structure_risk": "acceptable"
+      }
+    },
+    {
+      "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\hit_marker.svg",
+      "metrics": {
+        "element_count": 4,
+        "unique_color_count": 3,
+        "stroke_fill_mentions": 4
+      },
+      "metadata": {
+        "tool": "soppyvfx",
+        "preset": "hit_marker",
+        "seed": 902,
+        "width": 384,
+        "height": 384,
+        "role": "event",
+        "family": "battleship",
+        "schema": "schema/SOPPyVFX.md"
+      },
+      "judgment": {
+        "clutter_risk": "bounded",
+        "palette_density": "controlled",
+        "structure_risk": "acceptable"
+      }
+    },
+    {
+      "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\impact_flash.svg",
+      "metrics": {
+        "element_count": 14,
+        "unique_color_count": 3,
+        "stroke_fill_mentions": 14
+      },
+      "metadata": {
+        "tool": "soppyvfx",
+        "preset": "impact_flash",
+        "seed": 906,
+        "width": 512,
+        "height": 512,
+        "role": "event",
+        "family": "battleship",
+        "schema": "schema/SOPPyVFX.md"
+      },
+      "judgment": {
+        "clutter_risk": "bounded",
+        "palette_density": "controlled",
+        "structure_risk": "acceptable"
+      }
+    },
+    {
+      "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\miss_marker.svg",
+      "metrics": {
+        "element_count": 3,
+        "unique_color_count": 3,
+        "stroke_fill_mentions": 3
+      },
+      "metadata": {
+        "tool": "soppyvfx",
+        "preset": "miss_marker",
+        "seed": 903,
+        "width": 384,
+        "height": 384,
+        "role": "event",
+        "family": "battleship",
+        "schema": "schema/SOPPyVFX.md"
+      },
+      "judgment": {
+        "clutter_risk": "bounded",
+        "palette_density": "controlled",
+        "structure_risk": "acceptable"
+      }
+    },
+    {
+      "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\ship_outline.svg",
+      "metrics": {
+        "element_count": 4,
+        "unique_color_count": 2,
+        "stroke_fill_mentions": 4
+      },
+      "metadata": {
+        "tool": "soppyvfx",
+        "preset": "ship_outline",
+        "seed": 901,
+        "width": 896,
+        "height": 192,
+        "role": "board",
+        "family": "battleship",
+        "schema": "schema/SOPPyVFX.md"
+      },
+      "judgment": {
+        "clutter_risk": "bounded",
+        "palette_density": "controlled",
+        "structure_risk": "thin"
+      }
+    },
+    {
+      "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\sonar_ping.svg",
+      "metrics": {
+        "element_count": 5,
+        "unique_color_count": 2,
+        "stroke_fill_mentions": 5
+      },
+      "metadata": {
+        "tool": "soppyvfx",
+        "preset": "sonar_ping",
+        "seed": 904,
+        "width": 512,
+        "height": 512,
+        "role": "signature",
+        "family": "battleship",
+        "schema": "schema/SOPPyVFX.md"
+      },
+      "judgment": {
+        "clutter_risk": "bounded",
+        "palette_density": "controlled",
+        "structure_risk": "acceptable"
+      }
+    },
+    {
+      "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\victory_frame.svg",
+      "metrics": {
+        "element_count": 4,
+        "unique_color_count": 4,
+        "stroke_fill_mentions": 5
+      },
+      "metadata": {
+        "tool": "soppyvfx",
+        "preset": "victory_frame",
+        "seed": 908,
+        "width": 768,
+        "height": 432,
+        "role": "stinger",
+        "family": "battleship",
+        "schema": "schema/SOPPyVFX.md"
+      },
+      "judgment": {
+        "clutter_risk": "bounded",
+        "palette_density": "controlled",
+        "structure_risk": "acceptable"
+      }
+    },
+    {
+      "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\water_splash.svg",
+      "metrics": {
+        "element_count": 20,
+        "unique_color_count": 3,
+        "stroke_fill_mentions": 20
+      },
+      "metadata": {
+        "tool": "soppyvfx",
+        "preset": "water_splash",
+        "seed": 905,
+        "width": 512,
+        "height": 512,
+        "role": "impact_tail",
+        "family": "battleship",
+        "schema": "schema/SOPPyVFX.md"
+      },
+      "judgment": {
+        "clutter_risk": "bounded",
+        "palette_density": "controlled",
+        "structure_risk": "acceptable"
+      }
+    }
+  ],
+  "judgment": {
+    "pack_density": "light",
+    "palette_discipline": "tight"
+  }
+}

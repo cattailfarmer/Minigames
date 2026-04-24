@@ -2,22 +2,25 @@
 
 ## Current Intended Direction
 
-Battleship-AH will be built only through the AlienHand platform contract.
+Battleship-AH will first be developed as a complete hidden-state game core that can later be projected through AlienHand.
 
 The first solution target is:
 
-- a playable two-player local/LAN prototype
+- a playable two-player game core
 - host-owned rules and hidden state
-- at least one remote PC endpoint path
-- clear station-private rendering
+- truthful private view-model output
+- a standalone engine object not dependent on AlienHand runtime flow
+- a project split that keeps AlienHand integration outside the core
+- wireframe-first temporary visual language
+- a later projection path through AlienHand
 
 ## Initial Deliverables
 
-1. Define the Battleship game contract against AlienHand.
+1. Define the complete Battleship rules engine.
 2. Implement ship placement and attack resolution in host-authoritative logic.
-3. Render one private view per station.
-4. Add pairing, ready, and pass-turn flow.
-5. Reach end-to-end playable match completion.
+3. Emit truthful private and transition view models.
+4. Expose the engine through a standalone smoke path.
+5. Only then attach projection and endpoint concerns.
 
 ## Known Open Decisions
 
@@ -28,4 +31,9 @@ The first solution target is:
 
 ## Immediate Next Step
 
-Choose the technical stack for AlienHand and Battleship-AH together, then define the shared host-to-endpoint protocol and the game integration boundary.
+Use the now-compiling standalone engine as the center of gravity:
+
+1. keep strengthening rule truth through the smoke executable
+2. keep the standalone CLI playable without AlienHand
+3. improve transition/privacy presentation in the standalone shell
+4. only then return to platform projection concerns

@@ -1,0 +1,10 @@
+{
+  "tool": "soppyvfx",
+  "preset": "water_splash",
+  "seed": 905,
+  "width": 512,
+  "height": 512,
+  "role": "impact_tail",
+  "family": "battleship",
+  "schema": "schema/SOPPyVFX.md"
+}

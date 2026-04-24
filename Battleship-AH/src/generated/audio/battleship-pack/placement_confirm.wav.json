@@ -1,0 +1,12 @@
+{
+  "tool": "soppywave",
+  "preset": "placement_confirm",
+  "seed": 703,
+  "sample_rate": 44100,
+  "duration_seconds": 0.1512,
+  "waveform": "sine",
+  "frequency": 617.7292,
+  "role": "ui",
+  "family": "battleship",
+  "schema": "schema/SOPPyWave.md"
+}

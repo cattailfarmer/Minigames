@@ -1,0 +1,12 @@
+{
+  "tool": "soppywave",
+  "preset": "water_splash",
+  "seed": 714,
+  "sample_rate": 44100,
+  "duration_seconds": 0.745,
+  "waveform": "noise",
+  "frequency": 228.4214,
+  "role": "impact_tail",
+  "family": "battleship",
+  "schema": "schema/SOPPyWave.md"
+}

@@ -20,3 +20,8 @@ Initial development focus:
 3. pairing and assignment flows
 4. LAN PC endpoint before Smart TV endpoints
 5. Battleship-AH as the pilot proof-of-platform game
+6. reusable media tooling for audio, VFX, tracker composition, and analysis
+
+AlienHand also owns the shared media toolchain used to generate and review game assets:
+
+- [AlienHand/tools/README.md](C:/Project/Minigames/AlienHand/tools/README.md)

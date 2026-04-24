@@ -1,0 +1,51 @@
+{
+  "tool": "soppyvfx",
+  "pack": "battleship",
+  "assets": [
+    {
+      "name": "board_grid",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\board_grid.svg",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\board_grid.svg.json"
+    },
+    {
+      "name": "ship_outline",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\ship_outline.svg",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\ship_outline.svg.json"
+    },
+    {
+      "name": "hit_marker",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\hit_marker.svg",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\hit_marker.svg.json"
+    },
+    {
+      "name": "miss_marker",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\miss_marker.svg",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\miss_marker.svg.json"
+    },
+    {
+      "name": "sonar_ping",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\sonar_ping.svg",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\sonar_ping.svg.json"
+    },
+    {
+      "name": "water_splash",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\water_splash.svg",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\water_splash.svg.json"
+    },
+    {
+      "name": "impact_flash",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\impact_flash.svg",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\impact_flash.svg.json"
+    },
+    {
+      "name": "handoff_glow",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\handoff_glow.svg",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\handoff_glow.svg.json"
+    },
+    {
+      "name": "victory_frame",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\victory_frame.svg",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\vfx\\battleship-pack\\victory_frame.svg.json"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "tool": "soppywave",
+  "preset": "turn_start",
+  "seed": 705,
+  "sample_rate": 44100,
+  "duration_seconds": 0.1658,
+  "waveform": "sine",
+  "frequency": 543.7616,
+  "role": "transition",
+  "family": "battleship",
+  "schema": "schema/SOPPyWave.md"
+}

@@ -1,0 +1,12 @@
+{
+  "tool": "soppywave",
+  "preset": "sonar_ping",
+  "seed": 713,
+  "sample_rate": 44100,
+  "duration_seconds": 0.8689,
+  "waveform": "sine",
+  "frequency": 866.4603,
+  "role": "signature",
+  "family": "battleship",
+  "schema": "schema/SOPPyWave.md"
+}

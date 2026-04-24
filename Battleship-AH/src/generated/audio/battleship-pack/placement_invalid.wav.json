@@ -1,0 +1,12 @@
+{
+  "tool": "soppywave",
+  "preset": "placement_invalid",
+  "seed": 704,
+  "sample_rate": 44100,
+  "duration_seconds": 0.1959,
+  "waveform": "square",
+  "frequency": 205.3541,
+  "role": "ui_warning",
+  "family": "battleship",
+  "schema": "schema/SOPPyWave.md"
+}

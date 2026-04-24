@@ -1,0 +1,10 @@
+{
+  "tool": "soppyvfx",
+  "preset": "hit_marker",
+  "seed": 902,
+  "width": 384,
+  "height": 384,
+  "role": "event",
+  "family": "battleship",
+  "schema": "schema/SOPPyVFX.md"
+}

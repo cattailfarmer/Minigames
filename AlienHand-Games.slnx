@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/AlienHand/" />
+  <Folder Name="/AlienHand/src/">
+    <Project Path="AlienHand/src/AlienHand.Contracts/AlienHand.Contracts.csproj" />
+    <Project Path="AlienHand/src/AlienHand.Core/AlienHand.Core.csproj" />
+    <Project Path="AlienHand/src/AlienHand.Endpoint/AlienHand.Endpoint.csproj" />
+    <Project Path="AlienHand/src/AlienHand.Host/AlienHand.Host.csproj" />
+  </Folder>
+  <Folder Name="/Battleship-AH/" />
+  <Folder Name="/Battleship-AH/src/">
+    <Project Path="Battleship-AH/src/BattleshipAH.AlienHandAdapter/BattleshipAH.AlienHandAdapter.csproj" />
+    <Project Path="Battleship-AH/src/BattleshipAH.Cli/BattleshipAH.Cli.csproj" />
+    <Project Path="Battleship-AH/src/BattleshipAH.Core/BattleshipAH.Core.csproj" />
+    <Project Path="Battleship-AH/src/BattleshipAH.Smoke/BattleshipAH.Smoke.csproj" />
+  </Folder>
+</Solution>

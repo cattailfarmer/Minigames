@@ -1,0 +1,12 @@
+{
+  "tool": "soppywave",
+  "preset": "defeat_stinger",
+  "seed": 712,
+  "sample_rate": 44100,
+  "duration_seconds": 0.9499,
+  "waveform": "square",
+  "frequency": 159.9996,
+  "role": "stinger",
+  "family": "battleship",
+  "schema": "schema/SOPPyWave.md"
+}

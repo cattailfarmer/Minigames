@@ -1,0 +1,10 @@
+{
+  "tool": "soppywave",
+  "preset": "sonar_ping",
+  "seed": 7,
+  "sample_rate": 44100,
+  "duration_seconds": 0.9,
+  "waveform": "sine",
+  "frequency": 880.0,
+  "schema": "schema/SOPPyWave.md"
+}

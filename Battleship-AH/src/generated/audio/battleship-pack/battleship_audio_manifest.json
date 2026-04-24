@@ -1,0 +1,81 @@
+{
+  "tool": "soppywave",
+  "pack": "battleship",
+  "assets": [
+    {
+      "name": "pairing_accept",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\pairing_accept.wav",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\pairing_accept.wav.json"
+    },
+    {
+      "name": "pairing_reject",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\pairing_reject.wav",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\pairing_reject.wav.json"
+    },
+    {
+      "name": "ready_confirm",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\ready_confirm.wav",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\ready_confirm.wav.json"
+    },
+    {
+      "name": "placement_confirm",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\placement_confirm.wav",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\placement_confirm.wav.json"
+    },
+    {
+      "name": "placement_invalid",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\placement_invalid.wav",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\placement_invalid.wav.json"
+    },
+    {
+      "name": "turn_start",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\turn_start.wav",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\turn_start.wav.json"
+    },
+    {
+      "name": "handoff_curtain",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\handoff_curtain.wav",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\handoff_curtain.wav.json"
+    },
+    {
+      "name": "fire_command",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\fire_command.wav",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\fire_command.wav.json"
+    },
+    {
+      "name": "hit_confirm",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\hit_confirm.wav",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\hit_confirm.wav.json"
+    },
+    {
+      "name": "miss_confirm",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\miss_confirm.wav",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\miss_confirm.wav.json"
+    },
+    {
+      "name": "sink_confirm",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\sink_confirm.wav",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\sink_confirm.wav.json"
+    },
+    {
+      "name": "victory_stinger",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\victory_stinger.wav",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\victory_stinger.wav.json"
+    },
+    {
+      "name": "defeat_stinger",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\defeat_stinger.wav",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\defeat_stinger.wav.json"
+    },
+    {
+      "name": "sonar_ping",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\sonar_ping.wav",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\sonar_ping.wav.json"
+    },
+    {
+      "name": "water_splash",
+      "path": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\water_splash.wav",
+      "sidecar": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\battleship-pack\\water_splash.wav.json"
+    }
+  ]
+}

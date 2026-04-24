@@ -1,0 +1,15 @@
+{
+  "tool": "soppytracker",
+  "input_module": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\music\\battleship_nav_tension.bound.json",
+  "sample_rate": 44100,
+  "module_summary": {
+    "module_name": "Battleship Naval Tension",
+    "format": "internal_hybrid",
+    "pattern_count": 2,
+    "order_length": 2,
+    "channel_count": 4,
+    "instrument_count": 4,
+    "schema": "schema/MOD-Tracker.md"
+  },
+  "schema": "schema/MOD-Tracker.md"
+}

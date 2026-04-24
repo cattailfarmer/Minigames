@@ -2,21 +2,20 @@
 
 ## Identity
 
-Battleship-AH is a two-player hidden-state Battleship implementation built on AlienHand.
+Battleship-AH is a two-player hidden-state Battleship implementation with a host-authoritative game core and per-player private views.
 
 ## Scope
 
 The pilot must demonstrate:
 
 - two players
-- two private stations
 - host-authoritative game state
-- separate board views per player
+- separate private board views per player
 - ship placement
 - alternating attack turns
 - hit, miss, and sunk outcomes
 - match completion
-- pairing and screen assignment through AlienHand
+- engine outputs that can later be routed through AlienHand
 
 Deferred features:
 
@@ -26,9 +25,20 @@ Deferred features:
 - animated flourishes beyond basic clarity needs
 - advanced cosmetics and account systems
 
+## Temporary Visual Strategy
+
+Until polished art is ready, Battleship-AH should use intentional hollow wireframe visuals rather than accidental placeholder graphics.
+
+The temporary visual language should emphasize:
+
+- board clarity
+- hidden/public separation
+- state readability
+- low production cost with coherent style
+
 ## Game State Model
 
-The host owns:
+The game engine owns:
 
 - player identities
 - ship placements
@@ -37,7 +47,7 @@ The host owns:
 - victory state
 - current turn
 
-Each station may only view:
+Each player view may only expose:
 
 - its own board and ship layout
 - its own knowledge of shots fired at the opponent
@@ -61,14 +71,13 @@ Must show:
 
 Must support:
 
-- pairing screen
 - ready state
 - pass-turn privacy curtain
 - victory screen
 
 ## Input Model
 
-Initial supported controls:
+Initial supported control intents:
 
 - keyboard
 - gamepad
@@ -80,23 +89,23 @@ Planned next:
 
 ## Turn Flow
 
-1. players pair to stations
-2. players place ships privately
-3. host confirms readiness
+1. player 1 places ships privately
+2. player 2 places ships privately
+3. both players confirm readiness
 4. player 1 takes a shot
-5. result is resolved by host
+5. result is resolved by the engine
 6. turn transitions safely
 7. player 2 takes a shot
 8. repeat until all ships of one side are sunk
 
-## Platform Dependency
+Standalone development shells may additionally offer engine-driven legal auto-placement as a convenience path, as long as it uses the same placement rules and preserves hidden-state boundaries.
 
-Battleship-AH depends on AlienHand for:
+## Projection Dependency
 
-- station identity
-- endpoint assignment
+Battleship-AH later depends on AlienHand for:
+
 - privacy-safe projection
-- input routing
-- session lifecycle
+- endpoint assignment
+- screen and station routing
 
-The game must not reimplement platform-level pairing or endpoint routing logic.
+The game core should remain valid even before platform-level projection is attached.

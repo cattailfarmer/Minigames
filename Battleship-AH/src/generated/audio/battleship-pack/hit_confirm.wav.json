@@ -1,0 +1,12 @@
+{
+  "tool": "soppywave",
+  "preset": "hit_confirm",
+  "seed": 708,
+  "sample_rate": 44100,
+  "duration_seconds": 0.2532,
+  "waveform": "impact",
+  "frequency": 661.7329,
+  "role": "event",
+  "family": "battleship",
+  "schema": "schema/SOPPyWave.md"
+}

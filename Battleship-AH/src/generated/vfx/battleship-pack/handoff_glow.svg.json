@@ -1,0 +1,10 @@
+{
+  "tool": "soppyvfx",
+  "preset": "handoff_glow",
+  "seed": 907,
+  "width": 640,
+  "height": 360,
+  "role": "transition",
+  "family": "battleship",
+  "schema": "schema/SOPPyVFX.md"
+}

@@ -1,0 +1,12 @@
+{
+  "tool": "soppywave",
+  "preset": "sink_confirm",
+  "seed": 710,
+  "sample_rate": 44100,
+  "duration_seconds": 0.8274,
+  "waveform": "impact",
+  "frequency": 171.6908,
+  "role": "stinger",
+  "family": "battleship",
+  "schema": "schema/SOPPyWave.md"
+}

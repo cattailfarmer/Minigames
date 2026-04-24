@@ -1,0 +1,33 @@
+{
+  "ChannelName": "genie-demo",
+  "SessionName": "Genie Demo Session",
+  "SessionMode": "lobby",
+  "ManifestVersion": "1.0",
+  "RomId": "battleship-demo",
+  "RomLabel": "Battleship",
+  "RomSource": "local-demo",
+  "CoreProfile": "default",
+  "LaunchProfile": "standard",
+  "HostUser": "EmuHawk",
+  "SeatPolicy": "host-and-guest",
+  "ReadyState": "staged",
+  "GenieEnabled": true,
+  "GenieRole": "game-master",
+  "AgentPolicy": "bridge-controlled",
+  "ProviderPolicy": "openai-or-local",
+  "ModPolicy": "manual-confirmation",
+  "TransformationScope": "runtime-bound",
+  "ConsentMode": "host-confirmed",
+  "JoinReplayPolicy": "bounded",
+  "StateSnapshotPolicy": "visible",
+  "AuditVisibility": "session-visible",
+  "Players": [
+    {
+      "Nick": "host",
+      "DesiredSeat": "A",
+      "IsReady": true
+    }
+  ],
+  "Spectators": [],
+  "ActiveMods": []
+}

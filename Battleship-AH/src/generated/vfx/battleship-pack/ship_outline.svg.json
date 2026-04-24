@@ -1,0 +1,10 @@
+{
+  "tool": "soppyvfx",
+  "preset": "ship_outline",
+  "seed": 901,
+  "width": 896,
+  "height": 192,
+  "role": "board",
+  "family": "battleship",
+  "schema": "schema/SOPPyVFX.md"
+}

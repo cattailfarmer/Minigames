@@ -1,0 +1,9 @@
+{
+  "tool": "soppywave_mod_bridge",
+  "family": "sonar_tone",
+  "note": "C5",
+  "frequency": 523.2511,
+  "duration_seconds": 0.6,
+  "sample_rate": 44100,
+  "schema": "schema/SOPPyWave-MOD_bridge.md"
+}

@@ -1,0 +1,10 @@
+{
+  "tool": "soppyvfx",
+  "preset": "miss_marker",
+  "seed": 903,
+  "width": 384,
+  "height": 384,
+  "role": "event",
+  "family": "battleship",
+  "schema": "schema/SOPPyVFX.md"
+}

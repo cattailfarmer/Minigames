@@ -1,0 +1,12 @@
+{
+  "tool": "soppywave",
+  "preset": "pairing_accept",
+  "seed": 700,
+  "sample_rate": 44100,
+  "duration_seconds": 0.1711,
+  "waveform": "sine",
+  "frequency": 997.5971,
+  "role": "ui",
+  "family": "battleship",
+  "schema": "schema/SOPPyWave.md"
+}

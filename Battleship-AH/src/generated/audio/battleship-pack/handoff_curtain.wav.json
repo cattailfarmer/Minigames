@@ -1,0 +1,12 @@
+{
+  "tool": "soppywave",
+  "preset": "handoff_curtain",
+  "seed": 706,
+  "sample_rate": 44100,
+  "duration_seconds": 0.5308,
+  "waveform": "noise",
+  "frequency": 398.8389,
+  "role": "transition",
+  "family": "battleship",
+  "schema": "schema/SOPPyWave.md"
+}

@@ -1,0 +1,10 @@
+{
+  "tool": "soppyvfx",
+  "preset": "impact_flash",
+  "seed": 906,
+  "width": 512,
+  "height": 512,
+  "role": "event",
+  "family": "battleship",
+  "schema": "schema/SOPPyVFX.md"
+}

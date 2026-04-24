@@ -1,0 +1,20 @@
+{
+  "subject": "C:\\Project\\Minigames\\Battleship-AH\\src\\generated\\audio\\sonar_ping.wav",
+  "metrics": {
+    "duration_seconds": 0.9,
+    "sample_rate": 44100,
+    "channels": 1,
+    "peak": 0.695831,
+    "rms": 0.108605,
+    "zero_crossing_rate": 0.005745,
+    "transient_density": 25.0,
+    "spectral_centroid_hz": 1062.21
+  },
+  "judgment": {
+    "clarity": "clear",
+    "fatigue_risk": "low",
+    "masking_risk": "bounded",
+    "notes": []
+  },
+  "uncertainty": []
+}

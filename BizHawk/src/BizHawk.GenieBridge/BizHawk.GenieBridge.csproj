@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<Nullable>disable</Nullable>
+	</PropertyGroup>
+	<Import Project="../MainSlnCommon.props" />
+	<ItemGroup>
+		<ProjectReference Include="..\BizHawk.Common\BizHawk.Common.csproj" />
+		<PackageReference Include="Newtonsoft.Json" />
+	</ItemGroup>
+</Project>
